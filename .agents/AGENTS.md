@@ -45,10 +45,11 @@ Este archivo define las reglas de desarrollo, la arquitectura y los requisitos e
 *   **Web:** Uso de la librería **hls.js** para procesar los streams. Empaquetado gestionado por Vite según el entorno.
 *   **Calidad y Ajustes de Imagen:** Auto-selección de la máxima resolución disponible. Relación de aspecto fija en "Fit" (Contain) con barras negras si la proporción no coincide.
 
-## 6. Estrategia de Testing
-*   **Pruebas End-to-End (Playwright):** Destinadas a los flujos críticos (Happy Path) usando listas M3U mockeadas localmente.
-*   **Pruebas de Integración (Vitest):** Destinadas a evaluar Features completas interactuando con su estado (Zustand).
-*   **Pruebas Unitarias (Vitest):** Lógica pura: estado global, almacenamiento y parser.
+## 7. Buenas Prácticas de Desarrollo y Seguridad
+*   **Seguridad de Firmas y Certificados**: Nunca subir archivos `.p12`, firmas criptográficas o contraseñas al repositorio Git. Excluir siempre la carpeta de certificados (`certs/`) en el `.gitignore`.
+*   **Gestión de Entornos Locales**: Omitir los archivos locales de orquestación (como `docker-compose.yml`) de los repositorios de Git y proveer en su lugar plantillas públicas del tipo `docker-compose.example.yml` para evitar la filtración de contraseñas o rutas privadas.
+*   **Variables de Configuración Explícitas**: Evitar nombres genéricos de variables como `PASSWORD` o `PROFILE_NAME` para configuraciones del sistema. Utilizar nombres explícitos y auto-documentados como `TIZEN_PROFILE_NAME` y `TIZEN_CERTIFICATE_PASSWORD` para denotar claramente su contexto.
+*   **Aislamiento y Emulación de Plataforma**: Diseñar los flujos de compilación/firma de forma aislada en Docker para no ensuciar la máquina local del desarrollador. Asegurar la compatibilidad multiplataforma especificando la emulación correcta (`platform: linux/amd64` en Macs Apple Silicon) y resolviendo dependencias de compilación nativas mediante `npm install --os=linux --cpu=x64`.
 
 ---
 
