@@ -26,6 +26,10 @@ dist-ssr
 # Tizen package
 *.wgt
 verteves.wgt
+certs/
+
+# Docker local configurations
+docker-compose.yml
 
 # Playwright reports
 playwright-report/
