@@ -1,6 +1,6 @@
-# Verteves IPTV
+# Verteles IPTV
 
-Verteves es un reproductor de IPTV autónomo y de alto rendimiento de código abierto, diseñado específicamente para **Samsung Tizen OS** (Smart TVs) y la **Web**. La aplicación está construida completamente en el lado del cliente (Frontend-only), garantizando velocidad, eficiencia y privacidad.
+Verteles es un reproductor de IPTV autónomo y de alto rendimiento de código abierto, diseñado específicamente para **Samsung Tizen OS** (Smart TVs) y la **Web**. La aplicación está construida completamente en el lado del cliente (Frontend-only), garantizando velocidad, eficiencia y privacidad.
 
 ---
 
