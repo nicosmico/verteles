@@ -10,6 +10,8 @@
     "build:tizen:docker": "docker compose up --build",
     "tizen:deploy": "docker compose run --rm tizen-signer bash -c 'sdb connect \"$0\" && sdb devices && sdb install /workspace/verteles.wgt'",
     "tizen:deploy:tv": "npm run tizen:deploy -- 198.168.18.7",
+    "tizen:logs": "docker compose run --rm tizen-signer bash -c 'sdb connect 198.168.18.7 && sdb dlog'",
+    "tizen:uninstall": "docker compose run --rm tizen-signer bash -c 'sdb connect 198.168.18.7 && sdb uninstall XoHlW9z1dM.Verteles'",
     "preview": "vite preview",
     "test:unit": "vitest run",
     "test:unit:watch": "vitest",

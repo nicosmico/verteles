@@ -54,20 +54,30 @@ Si alguna vez cambia la IP de tu TV o quieres probar en otra pantalla:
 4. Sube e instala el widget `verteles.wgt` directamente en tu televisor.
 5. Al terminar, verás el mensaje `Success` y la app **Verteles** estará disponible en el Smart Hub de tu TV.
 
----
+## 5. Otros Comandos de Utilidad (sdb)
+Hemos preconfigurado accesos rápidos de npm para estas tareas de depuración (los cuales realizan la conexión automáticamente en segundo plano):
 
-## 5. Comandos Útiles de Depuración en Docker
-Si necesitas ejecutar tareas adicionales de depuración sin instalar nada localmente, puedes correr los siguientes comandos:
-
-* **Ver los logs de la TV en tiempo real:**
+* **Ver los logs de la TV en tiempo real (consola de la app):**
+  Abre una terminal adicional mientras ejecutas la app y corre:
   ```bash
-  docker compose run --rm tizen-signer sdb dlog
+  npm run tizen:logs
   ```
 * **Desinstalar la aplicación de la TV:**
   ```bash
-  docker compose run --rm tizen-signer sdb uninstall XoHlW9z1dM.Verteles
+  npm run tizen:uninstall
+  ```
+
+---
+
+## 💡 ¿Cómo funcionan bajo la manga?
+Dado que cada contenedor Docker es independiente y "olvida" las conexiones previas cuando se cierra, cada comando debe conectarse a la TV primero. Si deseas correr comandos personalizados manualmente de forma directa en Docker, debes anteponer la conexión:
+
+* **Ver logs manualmente:**
+  ```bash
+  docker compose run --rm tizen-signer bash -c "sdb connect 198.168.18.7 && sdb dlog"
   ```
 * **Ver dispositivos conectados:**
   ```bash
-  docker compose run --rm tizen-signer sdb devices
+  docker compose run --rm tizen-signer bash -c "sdb connect 198.168.18.7 && sdb devices"
   ```
+
