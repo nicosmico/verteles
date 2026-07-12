@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc -b && vite build",
+    "build": "tsc -b && vite build && cp config.xml dist/config.xml",
     "build:tizen": "npm run build && node scripts/package-tizen.js",
     "build:tizen:docker": "docker compose up --build",
     "tizen:deploy": "docker compose run --rm tizen-signer bash -c 'sdb connect \"$0\" && sdb devices && sdb install /workspace/verteles.wgt'",
