@@ -7,6 +7,7 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "build:tizen": "npm run build && node scripts/package-tizen.js",
+    "build:tizen:docker": "docker compose up --build",
     "preview": "vite preview",
     "test:unit": "vitest run",
     "test:unit:watch": "vitest",

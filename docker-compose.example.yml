@@ -1,0 +1,21 @@
+# Plantilla de ejemplo para la configuración de Docker Compose
+# Duplica este archivo como 'docker-compose.yml' y personaliza sus valores.
+# NOTA: 'docker-compose.yml' está en el .gitignore para evitar subir credenciales de producción.
+
+version: '3.8'
+
+services:
+  tizen-signer:
+    build: .
+    image: verteles-tizen-signer
+    platform: linux/amd64
+    volumes:
+      - .:/workspace
+      - ./certs:/certs
+    environment:
+      # Carpeta donde se montará/guardará tu certificado .p12
+      - CERT_DIR=/certs
+      # Nombre del perfil de seguridad de Tizen
+      - TIZEN_PROFILE_NAME=VertevesProfile
+      # Contraseña para el certificado de desarrollo/producción
+      - TIZEN_CERTIFICATE_PASSWORD=vertevesdevpwd
