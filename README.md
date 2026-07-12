@@ -105,22 +105,17 @@ Este comando:
 Una vez que tengas el archivo `verteles.wgt` firmado en tu directorio raíz:
 
 1. **Activa el Developer Mode en la TV**:
-   * Abre la sección **Apps** en tu Smart TV.
-   * Presiona la combinación **`1` `2` `3` `4` `5`** en el control remoto.
+   * Entra a la sección de **Apps** en la TV.
+   * Ve al final, entra en **Configuración de Apps**, y presiona en tu control remoto: **`1` `2` `3` `4` `5`**.
    * Activa el **Developer Mode** en `ON`.
-   * Ingresa la IP local de tu computadora.
-   * Reinicia la TV manteniendo presionado el botón de encendido hasta que se apague y aparezca el logo.
-2. **Conecta tu Mac a la TV**:
-   * Abre la terminal en tu Mac y ejecuta:
+   * Ingresa la IP local de tu Mac y **reinicia físicamente la TV** (mantén presionado el botón Power en el control remoto por 5 segundos).
+2. **Despliega la aplicación**:
+   * Conéctate e instala en la TV con tu IP preconfigurada:
      ```bash
-     sdb connect <IP_DE_LA_TV>
+     npm run tizen:deploy:tv
      ```
-   * Valida la conexión ejecutando `sdb devices`. Si dice `unauthorized`, acepta el mensaje en la pantalla del televisor.
-3. **Instala el archivo `.wgt`**:
-   * Instala el widget firmado ejecutando en tu terminal local:
-     ```bash
-     sdb install verteles.wgt
-     ```
+   * *O para usar otra IP:* `npm run tizen:deploy -- <IP_DE_LA_TV>`
+   * (Acepta el mensaje de confirmación de depuración de red que aparecerá en la pantalla de la TV la primera vez).
 
 ---
 
@@ -128,7 +123,11 @@ Una vez que tengas el archivo `verteles.wgt` firmado en tu directorio raíz:
 
 *   `npm run dev`: Arranca el servidor de desarrollo local en `http://localhost:3000` con proxy para evadir CORS.
 *   `npm run build`: Compila la versión de producción web.
-*   `npm run build:tizen`: Compila y empaqueta la aplicación en el archivo de distribución `.wgt` para Tizen OS localmente (requiere Tizen CLI nativo).
-*   `npm run build:tizen:docker`: Ejecuta el flujo híbrido de compilación y firma automatizado en Docker.
+*   `npm run build:tizen:docker`: Ejecuta el flujo de compilación y firma automatizado en Docker para generar `./verteles.wgt`.
+*   `npm run tizen:deploy:tv`: Conecta e instala la app en tu Smart TV (`198.168.18.7`).
+*   `npm run tizen:deploy -- <IP>`: Conecta e instala la app en una IP de TV específica.
+*   `npm run tizen:logs`: Escucha los logs de la TV en tiempo real (consola de la app).
+*   `npm run tizen:uninstall`: Elimina la aplicación instalada en tu TV.
 *   `npm run test:unit`: Ejecuta las pruebas unitarias locales.
 *   `npm run test:e2e`: Ejecuta las pruebas E2E con Playwright.
+
