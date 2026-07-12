@@ -1,64 +1,87 @@
 # Guía Rápida de Instalación en Samsung Smart TV (Tizen OS)
 
-Este flujo utiliza **Docker** al 100% para evitar tener que instalar Java, el Tizen SDK o cualquier otra herramienta (incluyendo `sdb`) en tu Mac. Todo el proceso de compilación, firma y despliegue se ejecuta dentro del contenedor de Docker.
+Esta guía detalla los dos flujos disponibles para instalar y probar la aplicación **Verteles** en tu Smart TV Samsung física: el flujo recomendado mediante la **Extensión de VS Code** y el flujo alternativo mediante **Docker CLI** (para terminal/automatización).
 
 ---
 
-## 1. Prerrequisitos
-* Tu Mac y la TV en la **misma red local** (Wi-Fi o cable Ethernet).
-* **Docker Desktop** ejecutándose en tu Mac.
-* *¡No necesitas instalar nada más en macOS!*
+## 1. Prerrequisitos Comunes
+* Tu Mac y la TV deben estar conectados a la **misma red local** (Wi-Fi o cable Ethernet).
+* La TV debe tener activado el **Developer Mode** (Modo Desarrollador) apuntando a la IP de tu Mac.
+* Conocer el **DUID (Device Unique ID)** de tu TV (puedes consultarlo en la TV entrando a: `Menú > Soporte > Contactar con Samsung`).
+
+### Cómo Activar Developer Mode en la TV:
+1. En la TV, entra en la sección de **Apps**.
+2. Presiona de forma consecutiva la secuencia **`1` `2` `3` `4` `5`** en el control remoto.
+3. En la ventana emergente, cambia el interruptor a **ON** e introduce la **IP local de tu Mac**.
+   * *Puedes ver la IP de tu Mac en Ajustes del Sistema > Red.*
+4. **Reinicio obligatorio de la TV**: Mantén pulsado el botón de **Apagado/Power** del control remoto durante 5 segundos (hasta que la TV se apague y se encienda mostrando el logo de Tizen) o desenchúfala de la corriente por 10 segundos.
 
 ---
 
-## 2. Activar Developer Mode en la TV
-1. En la TV, entra a la sección de **Apps**.
-2. Desplázate (scroll) hasta el final de la pantalla y entra en la sección **Configuración de Apps** (o en la barra de configuración superior).
-3. Con el control remoto de la TV, presiona la secuencia: **`1` `2` `3` `4` `5`** de forma consecutiva.
-4. En la ventana emergente, cambia el interruptor a **ON** e ingresa la **IP local de tu Mac**.
-   * *Puedes ver la IP de tu Mac en Ajustes del Sistema -> Red.*
-5. **Reinicio físico obligatorio:** Mantén pulsado el botón **Power** del control remoto durante 5 segundos (hasta que se apague y encienda mostrando el logo de Tizen) o desconecta la TV de la corriente por 10 segundos.
+## Método A: Extensión de VS Code (Recomendado para Desarrollo Diario)
+
+Este método te permite compilar, firmar, desplegar y abrir la aplicación directamente en la televisión con un solo clic desde tu editor de código.
+
+### Paso 1: Configurar la Extensión en VS Code
+1. Instala la extensión **Tizen TV** oficial en VS Code.
+2. Sigue las instrucciones de la extensión para generar tu **Samsung Developer Certificate** (menú `Create Certificate` en la barra lateral de Tizen).
+   * Necesitarás iniciar sesión en tu cuenta de Samsung y proporcionar el **DUID** de tu TV (el que obtuviste en el paso anterior) para generar el certificado de distribuidor.
+
+### Paso 2: Compilar el código React
+Corre el comando de compilación en tu terminal dentro de la carpeta `verteles_`:
+```bash
+npm run build
+```
+*Este paso compilará la aplicación y copiará automáticamente los archivos necesarios para la extensión Tizen (`.project`, `.tproject`, `config.xml` y `tizen_web_project.yaml`) al directorio `/dist`.*
+
+### Paso 3: Lanzar en la TV
+En la pestaña de la extensión de Tizen en VS Code, configura tus objetivos activos (**Active Targets**):
+* **Project**: Selecciona la carpeta `dist` (la cual es detectada automáticamente como proyecto Tizen gracias a los archivos que Vite copió allí).
+* **Device**: Selecciona tu TV (`QN50QEF1AGXZS`).
+* **Certificate**: Selecciona el perfil de certificados de Samsung que creaste en el Paso 1.
+
+Haz clic en **Run Project** en las acciones rápidas de la extensión. La extensión empaquetará el `.wgt`, lo firmará con tu certificado y lo abrirá en la TV.
 
 ---
 
-## 3. Compilar y Firmar (.wgt)
-En la terminal de la Mac, en la raíz del proyecto, ejecuta:
+## Método B: Despliegue Mediante Docker CLI (Independiente del Editor)
+
+Este método aísla el empaquetado, la firma y el despliegue dentro de un contenedor Docker Ubuntu, ideal para automatización de builds o si no deseas utilizar la extensión de VS Code.
+
+### Paso 1: Instalar y Firmar (.wgt)
+Genera el paquete firmado ejecutando lo siguiente en la raíz del proyecto `verteles_`:
 ```bash
 npm run build:tizen:docker
 ```
-*Este comando compila la aplicación y genera el instalador firmado `./verteles.wgt` en la raíz de tu proyecto usando Docker.*
+*Este comando compila la app de React y ejecuta un contenedor Docker para generar y firmar el archivo `./verteles.wgt` en tu raíz utilizando tus certificados locales (`/certs`).*
 
----
+> [!NOTE]
+> Si tienes tus archivos `author.p12` y `distributor.p12` generados localmente, colócalos en la carpeta `./certs/` del proyecto. El script `docker-sign.sh` los detectará y los usará de manera automática.
 
-## 4. Conectar e Instalar en la TV (Vía Docker)
-
-### A. Ejecutar el despliegue directo (Recomendado)
-Como hemos configurado tu IP en el proyecto, puedes hacer el despliegue completo con un solo comando simplificado:
+### Paso 2: Conectar y Desplegar
+Puedes desplegar el widget a tu TV con el comando rápido configurado para tu IP:
 ```bash
 npm run tizen:deploy:tv
 ```
+*Si la IP de tu TV cambia, puedes pasarla manualmente al comando general:*
+```bash
+npm run tizen:deploy -- <IP_DE_LA_TV>
+# Ejemplo: npm run tizen:deploy -- 192.168.18.7
+```
 
-### B. Ejecutar despliegue a una IP manual o diferente
-Si alguna vez cambia la IP de tu TV o quieres probar en otra pantalla:
-1. Ve en la televisión a: **Ajustes > General > Red > Estado de Red > Ajustes de IP** (ej. `198.168.18.7`).
-2. Ejecuta el script general especificando la IP con `--`:
-   ```bash
-   npm run tizen:deploy -- <IP_DE_LA_TV>
-   ```
-   *Ejemplo: `npm run tizen:deploy -- 198.168.18.7`*
+### Paso 3: Abrir la App en la TV
+Una vez instalada en la TV, puedes abrirla inmediatamente sin tocar el control remoto ejecutando:
+```bash
+npm run tizen:run:tv
+```
 
-#### ¿Qué hace este comando en segundo plano?
-1. Levanta temporalmente un contenedor Docker con la herramienta `sdb` integrada.
-2. Se conecta a la IP de tu TV (`198.168.18.7`).
-3. **Revisa la TV:** Si es la primera vez que te conectas, aparecerá una alerta en la pantalla de la TV preguntando si deseas permitir la depuración. **Acéptala inmediatamente con el control remoto** para que el comando continúe.
-4. Sube e instala el widget `verteles.wgt` directamente en tu televisor.
-5. Al terminar, verás el mensaje `Success` y la app **Verteles** estará disponible en el Smart Hub de tu TV.
+---
 
-## 5. Otros Comandos de Utilidad (sdb)
-Hemos preconfigurado accesos rápidos de npm para estas tareas de depuración (los cuales realizan la conexión automáticamente en segundo plano):
+## Comandos Útiles de Depuración (Docker)
 
-* **Ver los logs de la TV en tiempo real (consola de la app):**
-  Abre una terminal adicional mientras ejecutas la app y corre:
+Los siguientes scripts ejecutan comandos `sdb` (Smart Development Bridge) utilizando el contenedor Docker para que no necesites instalar nada en tu macOS local:
+
+* **Ver los logs de consola de la app en tiempo real (TV):**
   ```bash
   npm run tizen:logs
   ```
@@ -66,18 +89,3 @@ Hemos preconfigurado accesos rápidos de npm para estas tareas de depuración (l
   ```bash
   npm run tizen:uninstall
   ```
-
----
-
-## 💡 ¿Cómo funcionan bajo la manga?
-Dado que cada contenedor Docker es independiente y "olvida" las conexiones previas cuando se cierra, cada comando debe conectarse a la TV primero. Si deseas correr comandos personalizados manualmente de forma directa en Docker, debes anteponer la conexión:
-
-* **Ver logs manualmente:**
-  ```bash
-  docker compose run --rm tizen-signer bash -c "sdb connect 198.168.18.7 && sdb dlog"
-  ```
-* **Ver dispositivos conectados:**
-  ```bash
-  docker compose run --rm tizen-signer bash -c "sdb connect 198.168.18.7 && sdb devices"
-  ```
-

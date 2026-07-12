@@ -29,7 +29,16 @@ fi
 echo "📝 Registering security profile '${TIZEN_PROFILE_NAME}'..."
 # Borramos el perfil si ya existe para evitar errores de duplicado
 tizen security-profiles remove -n "${TIZEN_PROFILE_NAME}" 2>/dev/null || true
-tizen security-profiles add -n "${TIZEN_PROFILE_NAME}" -a "${AUTHOR_P12}" -p "${TIZEN_CERTIFICATE_PASSWORD}"
+
+DIST_P12="$CERT_DIR/distributor.p12"
+if [ -f "${DIST_P12}" ]; then
+    echo "🔑 Distributor certificate found at ${DIST_P12}. Registering profile with distributor certificate..."
+    TIZEN_DIST_PASSWORD="${TIZEN_DIST_PASSWORD:-$TIZEN_CERTIFICATE_PASSWORD}"
+    tizen security-profiles add -n "${TIZEN_PROFILE_NAME}" -a "${AUTHOR_P12}" -p "${TIZEN_CERTIFICATE_PASSWORD}" -d "${DIST_P12}" -dp "${TIZEN_DIST_PASSWORD}"
+else
+    echo "⚠️ No distributor certificate found at ${DIST_P12}. Packaging with Author certificate only (Emulators only)."
+    tizen security-profiles add -n "${TIZEN_PROFILE_NAME}" -a "${AUTHOR_P12}" -p "${TIZEN_CERTIFICATE_PASSWORD}"
+fi
 
 # 3. Compilar la aplicación React y empaquetar .wgt
 echo "📦 Building and packaging IPTV app..."

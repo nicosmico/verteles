@@ -23,10 +23,14 @@ dist-ssr
 *.sln
 *.sw?
 
-# Tizen package
+# Tizen package and certificates
 *.wgt
 verteves.wgt
 certs/
+*.p12
+*.pem
+*.key
+*.pub
 
 # Docker local configurations
 docker-compose.yml
