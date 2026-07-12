@@ -94,15 +94,15 @@ Este comando:
 1. Iniciará el contenedor de Docker.
 2. Instalará las dependencias de Node.js en un volumen limpio.
 3. Compilará el proyecto web (`npm run build`).
-4. Creará el archivo `/workspace/verteves.wgt`.
+4. Creará el archivo `/workspace/verteles.wgt`.
 5. Firmará el widget `.wgt` usando el certificado montado en `./certs`.
-6. El archivo final firmado quedará guardado en la raíz del proyecto listo para su instalación: `./verteves.wgt`.
+6. El archivo final firmado quedará guardado en la raíz del proyecto listo para su instalación: `./verteles.wgt`.
 
 ---
 
 ## 📺 Despliegue en la Smart TV (Zapping)
 
-Una vez que tengas el archivo `verteves.wgt` firmado en tu directorio raíz:
+Una vez que tengas el archivo `verteles.wgt` firmado en tu directorio raíz:
 
 1. **Activa el Developer Mode en la TV**:
    * Abre la sección **Apps** en tu Smart TV.
@@ -119,7 +119,7 @@ Una vez que tengas el archivo `verteves.wgt` firmado en tu directorio raíz:
 3. **Instala el archivo `.wgt`**:
    * Instala el widget firmado ejecutando en tu terminal local:
      ```bash
-     sdb install verteves.wgt
+     sdb install verteles.wgt
      ```
 
 ---

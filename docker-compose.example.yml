@@ -16,6 +16,5 @@ services:
       # Carpeta donde se montará/guardará tu certificado .p12
       - CERT_DIR=/certs
       # Nombre del perfil de seguridad de Tizen
-      - TIZEN_PROFILE_NAME=VertevesProfile
-      # Contraseña para el certificado de desarrollo/producción
-      - TIZEN_CERTIFICATE_PASSWORD=vertevesdevpwd
+      - TIZEN_PROFILE_NAME=VertelesProfile
+      - TIZEN_CERTIFICATE_PASSWORD=vertelesdevpwd

@@ -5,7 +5,7 @@ Este plan detalla los pasos para inicializar el proyecto, configurar el entorno 
 ## Decisiones de Diseño Confirmadas
 *   **Lenguaje:** React + TypeScript (usando el template `react-ts` de Vite).
 *   **Estilos:** Tailwind CSS v4 (integrado vía CSS imports).
-*   **Tizen Widget configuration:** ID inicial `XoHlW9z1dM.Verteves`.
+*   **Tizen Widget configuration:** ID inicial `XoHlW9z1dM.Verteles`.
 
 ---
 
@@ -13,7 +13,7 @@ Este plan detalla los pasos para inicializar el proyecto, configurar el entorno 
 
 ### Project Initialization & Setup
 
-#### [NEW] [package.json](file:///Users/nico/Development/verteves/package.json)
+#### [NEW] [package.json](file:///Users/nico/Development/verteles/package.json)
 Creación del archivo `package.json` con scripts para:
 *   `dev`: Ejecutar servidor local con soporte de proxy para CORS.
 *   `build`: Construir la versión web con transpilación legacy.
@@ -21,13 +21,13 @@ Creación del archivo `package.json` con scripts para:
 *   `test:unit`: Ejecutar pruebas con Vitest.
 *   `test:e2e`: Ejecutar pruebas con Playwright.
 
-#### [NEW] [vite.config.ts](file:///Users/nico/Development/verteves/vite.config.ts)
+#### [NEW] [vite.config.ts](file:///Users/nico/Development/verteles/vite.config.ts)
 Configuración de Vite con:
 *   `@vitejs/plugin-react` o `@vitejs/plugin-react-swc`.
 *   `@vitejs/plugin-legacy` apuntando a `chrome >= 47` (Tizen 3.0+) y polyfills necesarios.
 *   Servidor proxy local (`server.proxy`) para redirigir peticiones de streams M3U y saltarse restricciones de CORS en entorno de desarrollo.
 
-#### [NEW] [src/index.css](file:///Users/nico/Development/verteves/src/index.css)
+#### [NEW] [src/index.css](file:///Users/nico/Development/verteles/src/index.css)
 Configuración de Tailwind CSS v4 (`@import "tailwindcss";`).
 
 ---
@@ -39,7 +39,7 @@ Crearemos la estructura de carpetas basada en características (Features) para o
 #### [NEW] Carpetas base
 *   `src/components/`: Componentes globales compartidos.
 *   `src/hooks/`: Hooks globales y utilidades de React compartidas.
-*   `src/services/`: Capa de servicios compartidos (e.g. wrapper de IndexedDB, parser).
+*   `src/services/`: Capa de servicios comunes (e.g. wrapper de IndexedDB, parser).
 *   `src/utils/`: Funciones de utilidad pura.
 *   `src/features/`: Módulos principales:
     *   `src/features/player/`: Lógica del reproductor de video (avplay, hls.js).
@@ -50,30 +50,30 @@ Crearemos la estructura de carpetas basada en características (Features) para o
 
 ### Testing Environment Setup
 
-#### [NEW] [tsconfig.json](file:///Users/nico/Development/verteves/tsconfig.json) y tsconfig complementarios
+#### [NEW] [tsconfig.json](file:///Users/nico/Development/verteles/tsconfig.json) y tsconfig complementarios
 Configuraciones de TypeScript para el proyecto, Vitest y Playwright.
 
-#### [NEW] [vitest.config.ts](file:///Users/nico/Development/verteves/vitest.config.ts)
+#### [NEW] [vitest.config.ts](file:///Users/nico/Development/verteles/vitest.config.ts)
 Configuración del entorno de pruebas unitarias y de integración utilizando `vitest`, `jsdom` y `@testing-library/react`.
 
-#### [NEW] [src/__tests__/dummy.test.tsx](file:///Users/nico/Development/verteves/src/__tests__/dummy.test.tsx)
+#### [NEW] [src/__tests__/dummy.test.tsx](file:///Users/nico/Development/verteles/src/__tests__/dummy.test.tsx)
 Test unitario de prueba inicial para validar el setup de Vitest.
 
-#### [NEW] [playwright.config.ts](file:///Users/nico/Development/verteves/playwright.config.ts)
+#### [NEW] [playwright.config.ts](file:///Users/nico/Development/verteles/playwright.config.ts)
 Configuración básica de Playwright para pruebas E2E.
 
-#### [NEW] [e2e/dummy.spec.ts](file:///Users/nico/Development/verteves/e2e/dummy.spec.ts)
+#### [NEW] [e2e/dummy.spec.ts](file:///Users/nico/Development/verteles/e2e/dummy.spec.ts)
 Test E2E básico inicial para validar que Playwright levanta el entorno correctamente.
 
 ---
 
 ### Tizen Config & Packaging Pipeline
 
-#### [NEW] [config.xml](file:///Users/nico/Development/verteves/config.xml)
+#### [NEW] [config.xml](file:///Users/nico/Development/verteles/config.xml)
 Manifest inicial necesario para empaquetar una aplicación web para Tizen OS. Define metadatos, permisos de red, orientación de pantalla (`landscape`) y el punto de entrada (`index.html`).
 
-#### [NEW] [scripts/package-tizen.js](file:///Users/nico/Development/verteves/scripts/package-tizen.js)
-Script en Node.js que se encarga de empaquetar el directorio `dist` compilado en un archivo comprimido `verteves.wgt`.
+#### [NEW] [scripts/package-tizen.js](file:///Users/nico/Development/verteles/scripts/package-tizen.js)
+Script en Node.js que se encarga de empaquetar el directorio `dist` compilado en un archivo comprimido `verteles.wgt`.
 
 ---
 
@@ -86,4 +86,4 @@ Script en Node.js que se encarga de empaquetar el directorio `dist` compilado en
 ### Manual Verification
 *   Iniciar servidor local (`npm run dev`) y verificar en el navegador que el template React cargue adecuadamente con estilos de Tailwind CSS.
 *   Ejecutar `npm run build:tizen` para generar el bundle final.
-*   Verificar que se genera el archivo `verteves.wgt` en el directorio raíz y que contiene el manifest `config.xml` y los assets transpilados.
+*   Verificar que se genera el archivo `verteles.wgt` en el directorio raíz y que contiene el manifest `config.xml` y los assets transpilados.

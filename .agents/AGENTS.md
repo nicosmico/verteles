@@ -20,7 +20,7 @@ Este archivo define las reglas de desarrollo, la arquitectura y los requisitos e
 *   **Versión Tizen OS (MVP Final):** Compilación empaquetada ejecutada localmente en la TV, sirviendo como prueba final sin restricciones de CORS.
 *   **Versión Web (Desarrollo Local):** Uso del servidor proxy nativo de Vite (`server.proxy`) para eludir el CORS sin extensiones de navegador. (La versión web queda restringida exclusivamente al desarrollo por ahora).
 *   **Compatibilidad y Transpilación (Legacy):** Configuración obligatoria de Vite con `@vitejs/plugin-legacy` orientada a soportar navegadores antiguos (Chromium >= 47) para garantizar la compatibilidad con modelos antiguos de TV (Tizen 3.0+).
-*   **Tizen Config & Packaging:** Manifest inicial en `config.xml` (ID inicial `XoHlW9z1dM.Verteves`) y script de empaquetado `scripts/package-tizen.js` para generar `verteves.wgt`.
+*   **Tizen Config & Packaging:** Manifest inicial en `config.xml` (ID inicial `XoHlW9z1dM.Verteles`) y script de empaquetado `scripts/package-tizen.js` para generar `verteles.wgt`.
 
 ## 3. Gestión de Contenido y Listas M3U
 *   **Importación por URL:** Agregar múltiples listas M3U desde enlaces externos.

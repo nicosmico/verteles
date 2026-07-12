@@ -19,7 +19,7 @@ function App() {
             <span>✨</span> Hito 1 Completado
           </div>
           <h1 className="text-5xl md:text-6xl font-black tracking-tight bg-gradient-to-r from-violet-400 via-indigo-400 to-emerald-400 bg-clip-text text-transparent">
-            Verteves IPTV
+            Verteles IPTV
           </h1>
           <p className="text-neutral-400 text-base md:text-lg max-w-md mx-auto">
             Reproductor IPTV Autónomo de alto rendimiento para Tizen OS y la Web.
@@ -85,7 +85,7 @@ function App() {
 
         {/* Footer info */}
         <p className="text-xs text-neutral-600">
-          Verteves v0.1.0 • ID: XoHlW9z1dM.Verteves
+          Verteles v0.1.0 • ID: XoHlW9z1dM.Verteles
         </p>
       </div>
 

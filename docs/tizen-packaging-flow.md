@@ -25,12 +25,12 @@ Las utilidades de firma de Samsung (Tizen SDK) requieren instalar **Java JDK** y
 
 Para mantener tu máquina principal (Mac host) limpia, aislamos este proceso en **Docker**:
 *   **Docker (Compilación y Firma)**: Un contenedor ligero de Ubuntu x86_64 que encapsula Java 11, Node.js y el Tizen CLI. Este compila con Vite, genera el `.wgt` y lo firma de manera transparente.
-*   **Host Mac (Instalación)**: Tu computadora sólo necesita la utilidad pequeña **`sdb`** (~5 MB) para conectarse a la TV por red (`sdb connect <IP_TV>`) e instalar el widget final firmado (`sdb install verteves.wgt`).
+*   **Host Mac (Instalación)**: Tu computadora sólo necesita la utilidad pequeña **`sdb`** (~5 MB) para conectarse a la TV por red (`sdb connect <IP_TV>`) e instalar el widget final firmado (`sdb install verteles.wgt`).
 
 ---
 
 ## 4. Funcionamiento en Desarrollo (Develop)
-*   **Certificados de prueba automáticos**: Si no tienes un certificado en tu directorio local `./certs/`, el script de Docker genera un par de llaves privadas de desarrollador automáticamente con una contraseña genérica (`vertevesdevpwd`).
+*   **Certificados de prueba automáticos**: Si no tienes un certificado en tu directorio local `./certs/`, el script de Docker genera un par de llaves privadas de desarrollador automáticamente con una contraseña genérica (`vertelesdevpwd`).
 *   **Persistencia**: El certificado se copia de vuelta a la carpeta `./certs/` en tu Mac para que persista y no tengas que crearlo en cada build.
 *   **Comando de construcción**:
     ```bash

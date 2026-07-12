@@ -8,6 +8,8 @@
     "build": "tsc -b && vite build",
     "build:tizen": "npm run build && node scripts/package-tizen.js",
     "build:tizen:docker": "docker compose up --build",
+    "tizen:deploy": "docker compose run --rm tizen-signer bash -c 'sdb connect \"$0\" && sdb devices && sdb install /workspace/verteles.wgt'",
+    "tizen:deploy:tv": "npm run tizen:deploy -- 198.168.18.7",
     "preview": "vite preview",
     "test:unit": "vitest run",
     "test:unit:watch": "vitest",
