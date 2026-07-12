@@ -9,6 +9,8 @@
 *   **Versión Tizen OS (MVP Final):** Compilación empaquetada ejecutada localmente en la TV, sirviendo como prueba final sin restricciones de CORS.
 *   **Versión Web (Desarrollo Local):** Uso del servidor proxy nativo de Vite (`server.proxy`) para eludir el CORS sin extensiones de navegador. (Nota: La versión web queda restringida exclusivamente al desarrollo por ahora).
 *   **Compatibilidad y Transpilación (Legacy):** Configuración obligatoria de Vite con `@vitejs/plugin-legacy` orientada a soportar navegadores antiguos (Chromium >= 47) para garantizar la compatibilidad con modelos antiguos de TV (Tizen 3.0+).
+*   **Requisitos del Entorno (Tizen & SDK):** Para el empaquetado y la instalación en TV física o simulador, se requiere instalar **Java JDK** (versión 8 o superior), **Tizen Studio** o **Tizen CLI Tools** con la extensión de **Samsung TV SDK**, y agregar sus herramientas (`tizen`, `sdb`) al `PATH` del sistema operativo.
+*   **Firma de Paquetes:** Es obligatorio configurar perfiles de seguridad y certificados de Samsung en el Certificate Manager para firmar el archivo `.wgt` antes de instalarlo en televisores de prueba.
 
 **3. Gestión de Contenido y Listas M3U**
 *   **Importación por URL:** Agregar múltiples listas M3U desde enlaces externos.
