@@ -9,8 +9,10 @@ Este plan de implementación describe los pasos para diseñar la interfaz de TV 
 > La interfaz de usuario debe verse **exactamente igual** al diseño visual establecido. Se deben considerar las imágenes de la carpeta [docs/ui](file:///Users/nico/Development/Verteles%20workspace/Verteles/docs/ui/) (como [channels.png](file:///Users/nico/Development/Verteles%20workspace/Verteles/docs/ui/channels.png), [configurations.png](file:///Users/nico/Development/Verteles%20workspace/Verteles/docs/ui/configurations.png), [player.png](file:///Users/nico/Development/Verteles%20workspace/Verteles/docs/ui/player.png) y [playlists.png](file:///Users/nico/Development/Verteles%20workspace/Verteles/docs/ui/playlists.png)), que son screenshots del diseño de la aplicación, como referencia **al pie de la letra**. Recuerda usar los mismos colores, fuentes, iconos, estilos, TODO. No se permiten desviaciones estéticas. Aunque la forma de estructurar los componentes con buenas prácticas se puede modificar, visualmente debe quedar **IGUAL**.
 
 > [!IMPORTANT]
-> **Estructura Extensible de Playlists (Hacia Hito 4)**: 
-> Para admitir múltiples listas y favoritos independientes por lista en el Hito 4, diseñaremos el Store de Zustand desde ahora usando la siguiente estructura modular:
+> **Alcance del Hito 3 y Gestión de Playlists (Hacia Hito 4)**: 
+> En este Hito 3 crearemos **todas las vistas** de la aplicación (incluyendo la estructura y diseño visual de la sección de playlists y configuraciones para que visualmente se vean idénticos al diseño de UI). Sin embargo, la lógica funcional de gestión de múltiples playlists (agregar, listar, eliminar y persistir en IndexedDB) se postergará al **Hito 4**. Durante el Hito 3, la aplicación cargará automáticamente y de manera exclusiva la lista por defecto (`json-teles`).
+>
+> Para que el Store de Zustand esté preparado para la futura expansión, lo diseñaremos desde ahora usando la siguiente estructura modular:
 > ```typescript
 > interface PlaylistData {
 >   id: string;
