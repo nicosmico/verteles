@@ -1,9 +1,9 @@
 # Hitos del proyecto
 
-## Hito 1: Configuración del Proyecto y Entorno
+## Hito 1: Configuración del Proyecto y Entorno [COMPLETADO]
 Instalación de librerías base (React, Zustand, Tailwind, Vite). Configuración inicial del entorno de testing (Vitest y Playwright con un test dummy/básico). Definición de estructura de carpetas Feature-based, Git y Readme. Generación y empaquetado del primer `.wgt` ejecutable para verificar el flujo de despliegue en Tizen.
 
-## Hito 2: MVP de Reproducción Dual (Hola Mundo)
+## Hito 2: MVP de Reproducción Dual (Hola Mundo) [COMPLETADO]
 Creación de componente de abstracción `<VideoPlayer />` que diferencie dinámicamente entre Web (`hls.js`) y Tizen OS (`AVPlay`). Configuración del proxy de Vite para evadir CORS local. Reproducción exitosa del stream en vivo de "Chilevisión [CL]" de la lista M3U de prueba en ambas plataformas.
 
 ## Hito 3: Interfaz Visual Base y Navegación Espacial

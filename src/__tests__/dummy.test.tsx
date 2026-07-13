@@ -5,6 +5,6 @@ import App from '../App';
 describe('App Component', () => {
   it('renders Verteles IPTV title', () => {
     render(<App />);
-    expect(screen.getByText(/Verteles IPTV/i)).toBeInTheDocument();
+    expect(screen.getByText(/VERTELES/i)).toBeInTheDocument();
   });
 });

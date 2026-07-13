@@ -78,3 +78,7 @@ Desarrollo de la suite de pruebas End-to-End (E2E) con Playwright simulando fluj
 ## 8. Estándares de Git y Commits
 *   **Commit messages in English**: All Git commit messages must be written in English.
 *   **No auto-stage / No auto-commits**: The AI agent must never automatically execute `git add` or `git commit`. It must list the files it wants to stage, propose the suggested commit message, ask for explicit user authorization, and execute the Git staging and committing commands only after receiving the user's confirmation.
+
+## 9. Documentación Oficial de Samsung Tizen
+*   **Alineación con la Documentación Oficial**: A partir de ahora, todas las decisiones de diseño, implementaciones de API, ciclo de vida de componentes y configuraciones de empaquetado de la aplicación Tizen deben estar estrictamente fundamentadas en y seguir la documentación oficial de Samsung Tizen (https://samsungtizenos.com/docs/application/web/overview).
+

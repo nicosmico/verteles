@@ -1,1 +1,6 @@
 @import "tailwindcss";
+
+/* Allow the native Tizen AVPlay video layer behind the webview to shine through */
+html, body, #root {
+  background-color: transparent !important;
+}
