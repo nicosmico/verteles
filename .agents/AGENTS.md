@@ -72,3 +72,9 @@ Implementación obligatoria de *Virtual Scrolling* (virtualización de listas) p
 
 ### Hito 6: Testing Completo y QA
 Desarrollo de la suite de pruebas End-to-End (E2E) con Playwright simulando flujos críticos del usuario (Happy Path). Cobertura final de tests de integración para los flujos del estado global (Zustand) y pruebas unitarias de lógica pura en Vitest. Validación final de instalación y ejecución en simulador/TV física.
+
+---
+
+## 8. Estándares de Git y Commits
+*   **Commit messages in English**: All Git commit messages must be written in English.
+*   **No auto-stage / No auto-commits**: The AI agent must never automatically execute `git add` or `git commit`. It must list the files it wants to stage, propose the suggested commit message, ask for explicit user authorization, and execute the Git staging and committing commands only after receiving the user's confirmation.
