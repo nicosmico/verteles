@@ -1,6 +1,6 @@
 # Flujo de Compilación y Firma para Samsung Tizen OS
 
-Este documento detalla la arquitectura, los requerimientos de seguridad, los flujos de desarrollo (Docker y Extensión de VS Code) y las consideraciones para producción respecto al empaquetado y firma de la aplicación IPTV en Smart TVs de Samsung.
+Este documento detalla la arquitectura, los requerimientos de seguridad, los flujos de desarrollo (Extensión de VS Code) y las consideraciones para producción respecto al empaquetado y firma de la aplicación IPTV en Smart TVs de Samsung.
 
 ---
 
@@ -29,19 +29,11 @@ Para integrar el desarrollo ágil de React con la herramienta oficial de empaque
 
 ---
 
-## 4. Flujo Alternativo con Docker
-Si prefieres no usar VS Code, implementamos un flujo aislado en un contenedor ligero de Ubuntu x86_64:
-* El script de Docker (`scripts/docker-sign.sh`) genera de forma transparente certificados de pruebas autorizados, compila con Vite, empaqueta el `.wgt` y lo firma con tu perfil local.
-* **Soporte para Certificados Distribuidos**: El script de Docker está configurado para buscar el archivo `distributor.p12` (si lo has respaldado en tu carpeta `./certs/`) para registrarlo en el perfil de seguridad en Tizen CLI antes de firmar la compilación.
-
----
-
-## 5. Consideraciones para Producción (Production)
+## 4. Consideraciones para Producción (Production)
 Cuando llegue el momento de publicar la aplicación de forma oficial en la Samsung App Store (Seller Office), debes seguir las siguientes pautas de seguridad:
 
 ### ⚠️ Exclusión de Git (Seguridad de Credenciales)
-* **Certificados (`certs/`)**: Nunca subas el directorio `./certs/` a repositorios Git. Si un atacante accede a tu llave privada `author.p12`, podrá suplantar tu aplicación.
-* **Configuración local (`docker-compose.yml`)**: Debe ser ignorado por Git, ya que contiene contraseñas locales y rutas específicas de tu máquina. En su lugar, se sube una plantilla genérica llamada `docker-compose.example.yml`.
+* **Certificados (`certs/`)**: Nunca subas archivos `.p12` de certificados de producción a repositorios Git. Si un atacante accede a tu llave privada `author.p12`, podrá suplantar tu aplicación.
 
 ### 💾 Gestión de Certificados de Producción
 * **Creación**: El certificado de producción final se genera a través de la cuenta oficial de **Samsung Developer** usando el Certificate Manager visual.
