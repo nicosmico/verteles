@@ -14,7 +14,7 @@ export const ErrorOverlay: React.FC<ErrorOverlayProps> = ({ channelName, onRetry
           className="mx-auto mb-6 grid h-20 w-20 place-items-center rounded-2xl"
           style={{ background: 'rgba(255,69,32,0.12)' }}
         >
-          <AlertTriangle className="h-10 w-10 text-accent animate-bounce" />
+          <AlertTriangle className="h-10 w-10 text-accent" />
         </div>
         <h2 className="text-2xl font-bold tracking-tight text-white">Canal no disponible</h2>
         <p className="mt-3 text-base text-tx-secondary leading-relaxed">
