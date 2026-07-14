@@ -103,6 +103,12 @@ Desarrollo de la suite de pruebas End-to-End (E2E) con Playwright simulando fluj
     *   **Gestión de Estado (Zustand):**
         *   ¿Los selectores son atómicos para evitar re-renders globales?
         *   ¿Se evita suscribirse al store completo cuando solo se necesita una propiedad?
+    *   **Arquitectura y Separación de Responsabilidades:**
+        *   ¿El archivo nuevo o modificado se ubica en la capa correcta según la arquitectura definida (`core/`, `shared/`, `features/`, `utils/`)?
+        *   ¿La lógica de dominio de una feature permanece autocontenida dentro de su carpeta en `features/` y no se filtra hacia `shared/` o `core/`?
+        *   ¿Los componentes, hooks y servicios dentro de un módulo tienen una única responsabilidad clara? ¿Se evita mezclar lógica de UI, estado y negocio en un mismo archivo?
+        *   ¿Las utilidades puras (sin efectos secundarios) están en `utils/` y no dentro de componentes o stores?
+        *   ¿Se reutilizan abstracciones existentes (`core/storage/`, `shared/network/`, etc.) en lugar de reimplementar funcionalidad duplicada?
     *   **General:**
         *   ¿Se evitan closures que capturen referencias obsoletas?
         *   ¿Se limpian correctamente los efectos secundarios (timeouts, listeners, subscripciones)?
