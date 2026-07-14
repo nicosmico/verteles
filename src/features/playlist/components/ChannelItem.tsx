@@ -43,9 +43,7 @@ export const ChannelItem: React.FC<ChannelItemProps> = ({
           </p>
           {isFav && <Star className="h-3.5 w-3.5 shrink-0 fill-amber-400 text-amber-400" />}
         </div>
-        <p className="truncate text-xs text-tx-secondary leading-snug">
-          {channel.program ? channel.program.title : 'Programación Regular'}
-        </p>
+        {/* Program title hidden intentionally */}
 
       </div>
 

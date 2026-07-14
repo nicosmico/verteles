@@ -22,7 +22,7 @@ export const PlaybackBar: React.FC<PlaybackBarProps> = ({
 }) => {
   return (
     <div className="absolute inset-x-0 bottom-0 z-20 px-6 pb-6 transition-all duration-300">
-      <div className="rounded-2xl bg-[#111111]/95 border border-bg-border backdrop-blur-xl p-5 shadow-2xl shadow-black/60">
+      <div className="rounded-2xl bg-[#111111]/95 border border-bg-border backdrop-blur-xl px-5 py-4 2xl:px-8 2xl:py-6 shadow-2xl shadow-black/60">
         <div className="flex flex-col md:flex-row items-center justify-between gap-4">
           
           {/* Channel info and simple zapping control */}
@@ -35,7 +35,7 @@ export const PlaybackBar: React.FC<PlaybackBarProps> = ({
                 className="text-tx-secondary hover:text-white transition-all outline-none p-0.5"
                 title="Canal anterior"
               >
-                <ChevronUp className="h-6 w-6" />
+                <ChevronUp className="h-6 w-6 2xl:h-8 2xl:w-8" />
               </button>
               
               <LazyImage
@@ -43,7 +43,7 @@ export const PlaybackBar: React.FC<PlaybackBarProps> = ({
                 alt={channel.name}
                 fallbackColor={channel.fallbackColor}
                 fallbackText={channel.fallbackText}
-                className="grid h-12 w-12 place-items-center rounded-xl text-lg font-extrabold text-white shadow-md"
+                className="grid h-12 w-12 2xl:h-16 2xl:w-16 place-items-center rounded-xl text-base 2xl:text-xl font-extrabold text-white shadow-md"
               />
               
               <button
@@ -52,14 +52,14 @@ export const PlaybackBar: React.FC<PlaybackBarProps> = ({
                 className="text-tx-secondary hover:text-white transition-all outline-none p-0.5"
                 title="Canal siguiente"
               >
-                <ChevronDown className="h-6 w-6" />
+                <ChevronDown className="h-6 w-6 2xl:h-8 2xl:w-8" />
               </button>
             </div>
 
             {/* Title, Category & Current program details */}
             <div className="flex flex-col justify-center min-w-0 flex-1 md:flex-initial">
               <div className="flex items-center gap-2">
-                <h4 className="text-lg font-bold text-white leading-none truncate">
+                <h4 className="text-lg 2xl:text-2xl font-bold text-white leading-none truncate">
                   {channel.name}
                 </h4>
                 
@@ -71,44 +71,24 @@ export const PlaybackBar: React.FC<PlaybackBarProps> = ({
                   title={isFavorite ? 'Quitar de favoritos' : 'Añadir a favoritos'}
                 >
                   <Heart
-                    className={`h-4 w-4 transition-colors ${
+                    className={`h-4 w-4 2xl:h-5 2xl:w-5 transition-colors ${
                       isFavorite ? 'fill-amber-400 text-amber-400' : 'text-tx-secondary hover:text-white'
                     }`}
                   />
                 </button>
               </div>
               
-              {channel.program ? (
-                <div className="mt-2 text-sm text-tx-secondary flex flex-col sm:flex-row sm:items-center gap-1.5 sm:gap-2">
-                  <span className="font-semibold text-white/80 truncate max-w-[200px]">
-                    {channel.program.title}
-                  </span>
-                  <span className="hidden sm:inline text-white/20">•</span>
-                  <span className="tabular-nums text-xs">
-                    {channel.program.start} – {channel.program.end}
-                  </span>
-                  
-                  {/* Progress bar visual for program */}
-                  <div className="w-24 h-1 bg-[#222] rounded-full overflow-hidden shrink-0 mt-1 sm:mt-0 sm:ml-1">
-                    <div
-                      className="h-full bg-accent rounded-full"
-                      style={{ width: `${channel.program.progress * 100}%` }}
-                    />
-                  </div>
-                </div>
-              ) : (
-                <p className="mt-1 text-xs text-tx-secondary">Programación regular</p>
-              )}
+              {/* Program info hidden intentionally */}
             </div>
           </div>
 
           {/* Right part: Controls (Reload, resolution/aspect badges) */}
           <div className="flex items-center gap-3.5 w-full md:w-auto justify-end border-t border-bg-border pt-4 md:pt-0 md:border-none">
-            <span className="rounded-md bg-[#222] border border-bg-border px-2.5 py-1 text-[11px] font-semibold text-tx-secondary select-none">
+            <span className="rounded-md bg-[#222] border border-bg-border px-2.5 py-1 2xl:px-3 2xl:py-1.5 text-xs 2xl:text-sm font-semibold text-tx-secondary select-none">
               {channel.resolution || '1080p'}
             </span>
             
-            <span className="rounded-md bg-accent-subtle border border-accent/20 px-2.5 py-1 text-[11px] font-bold uppercase tracking-widest text-accent select-none">
+            <span className="rounded-md bg-accent-subtle border border-accent/20 px-2.5 py-1 2xl:px-3 2xl:py-1.5 text-xs 2xl:text-sm font-bold uppercase tracking-widest text-accent select-none">
               Fit
             </span>
 
@@ -118,10 +98,10 @@ export const PlaybackBar: React.FC<PlaybackBarProps> = ({
             <button
               type="button"
               onClick={onReload}
-              className="w-11 h-11 rounded-xl flex items-center justify-center transition-all bg-bg-card hover:bg-bg-hover text-tx-secondary hover:text-white border border-bg-border active:scale-95 shrink-0 cursor-pointer"
+              className="w-9 h-9 2xl:w-11 2xl:h-11 rounded-xl flex items-center justify-center transition-all bg-bg-card hover:bg-bg-hover text-tx-secondary hover:text-white border border-bg-border active:scale-95 shrink-0 cursor-pointer"
               title="Recargar transmisión"
             >
-              <RotateCcw className="h-4 w-4" />
+              <RotateCcw className="h-4 w-4 2xl:h-5 2xl:w-5" />
             </button>
           </div>
 
