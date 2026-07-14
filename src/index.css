@@ -1,6 +1,45 @@
 @import "tailwindcss";
 
-/* Allow the native Tizen AVPlay video layer behind the webview to shine through */
-html, body, #root {
-  background-color: transparent !important;
+@theme {
+  --color-bg-base: #000000;
+  --color-bg-panel: #111111;
+  --color-bg-card: #1a1a1a;
+  --color-bg-hover: #222222;
+  --color-bg-border: #2a2a2a;
+
+  --color-tx-primary: #ffffff;
+  --color-tx-secondary: #888888;
+  --color-tx-muted: #555555;
+
+  --color-accent: #ff4520;
+  --color-accent-hover: #ff5c38;
+  --color-accent-subtle: rgba(255, 69, 32, 0.15);
+
+  --font-sans: 'Inter', 'system-ui', '-apple-system', 'sans-serif';
 }
+
+@layer base {
+  html, body, #root {
+    height: 100%;
+    margin: 0;
+    /* Allow the native Tizen AVPlay video layer behind the webview to shine through */
+    background-color: transparent !important;
+    color: #fff;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    overflow: hidden;
+  }
+}
+
+/* Scrollbar customizations */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: #333; border-radius: 999px; }
+::-webkit-scrollbar-thumb:hover { background: #444; }
+
+/* Custom utilities for premium TV focus transition */
+.focus-tv {
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+

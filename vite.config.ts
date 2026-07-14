@@ -22,10 +22,10 @@ export default defineConfig({
         configure: (proxy, _options) => {
           proxy.on('proxyReq', (proxyReq, req, _res) => {
             const rawUrl = req.url || '';
-            const match = rawUrl.match(/^\/proxy\/(https?:\/\/.*)/);
+            const match = rawUrl.match(/^(https?:\/+(.*))/);
             if (match) {
               try {
-                const targetUrlStr = decodeURIComponent(match[1]);
+                const targetUrlStr = decodeURIComponent(match[1]).replace(/^(https?):\/+/, '$1://');
                 const parsedUrl = new URL(targetUrlStr);
                 // Update the path to match the target's path and search query
                 proxyReq.path = parsedUrl.pathname + parsedUrl.search;
@@ -39,10 +39,10 @@ export default defineConfig({
         // @ts-expect-error router exists in http-proxy but might not be typed in Vite's ProxyOptions
         router: (req) => {
           const rawUrl = req.url || '';
-          const match = rawUrl.match(/^\/proxy\/(https?:\/\/.*)/);
+          const match = rawUrl.match(/^(https?:\/+(.*))/);
           if (match) {
             try {
-              const targetUrlStr = decodeURIComponent(match[1]);
+              const targetUrlStr = decodeURIComponent(match[1]).replace(/^(https?):\/+/, '$1://');
               const parsedUrl = new URL(targetUrlStr);
               return parsedUrl.origin;
             } catch (e) {

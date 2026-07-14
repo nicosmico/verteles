@@ -8,13 +8,13 @@ export const isTizen = (): boolean => {
   );
 };
 
-/**
- * Returns a proxied URL for local web development to bypass CORS restrictions.
- * In production or on Tizen OS, it returns the URL unchanged.
- */
 export const getProxiedUrl = (url: string): string => {
   if (typeof window !== 'undefined' && !isTizen() && import.meta.env.DEV) {
-    // Vite server proxy is configured to catch `/proxy/http...`
+    // For the default playlist, serve the local static file to prevent proxy/CORS connection errors
+    if (url.includes('json-teles') && url.endsWith('.m3u')) {
+      return '/channels.m3u';
+    }
+    // Vite server proxy catches other URLs
     return `/proxy/${url}`;
   }
   return url;
