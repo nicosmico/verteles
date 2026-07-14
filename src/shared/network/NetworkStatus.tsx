@@ -1,6 +1,6 @@
 import React from 'react';
 import { Wifi, WifiOff } from 'lucide-react';
-import useNetworkStatus from '../hooks/useNetworkStatus';
+import useNetworkStatus from './useNetworkStatus';
 
 export const NetworkStatus: React.FC = () => {
   const { online, downlink } = useNetworkStatus();

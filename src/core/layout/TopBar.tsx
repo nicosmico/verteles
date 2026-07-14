@@ -1,9 +1,9 @@
 import React from 'react';
 import { PanelLeftOpen, Clock } from 'lucide-react';
-import { usePlayerStore } from '../features/player/store/usePlayerStore';
-import usePlayerInterface from '../hooks/usePlayerInterface';
-import useClock from '../hooks/useClock';
-import NetworkStatus from './NetworkStatus';
+import { usePlayerStore } from '../../features/player/store/usePlayerStore';
+import usePlayerInterface from '../../features/player/store/usePlayerInterface';
+import useClock from '../../shared/clock/useClock';
+import NetworkStatus from '../../shared/network/NetworkStatus';
 
 const fmtTime = (d: Date) =>
   d.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' });

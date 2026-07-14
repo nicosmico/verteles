@@ -1,7 +1,7 @@
 import React from 'react';
 import { ChevronUp, ChevronDown, Heart, RotateCcw, Play, Pause } from 'lucide-react';
-import type { ParsedChannel } from '../types';
-import LazyImage from '../../../components/LazyImage';
+import type { ParsedChannel } from '../../playlist/types';
+import LazyImage from '../../../shared/media/LazyImage';
 
 interface PlaybackBarProps {
   channel: ParsedChannel;

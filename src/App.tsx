@@ -8,14 +8,14 @@ import { VideoPlayer } from './features/player';
 import VisualStream from './features/player/components/VisualStream';
 import ErrorOverlay from './features/player/components/ErrorOverlay';
 import LoadingOverlay from './features/player/components/LoadingOverlay';
-import Sidebar from './features/playlist/components/Sidebar';
-import PlaybackBar from './features/playlist/components/PlaybackBar';
+import Sidebar from './core/layout/Sidebar';
+import PlaybackBar from './features/player/components/PlaybackBar';
 import ListsModal from './features/playlist/components/ListsModal';
 import SettingsModal from './features/playlist/components/SettingsModal';
-import TopBar from './components/TopBar';
+import TopBar from './core/layout/TopBar';
 
 // Import hooks
-import usePlayerInterface, { MODAL_LISTS, MODAL_SETTINGS } from './hooks/usePlayerInterface';
+import usePlayerInterface, { MODAL_LISTS, MODAL_SETTINGS } from './features/player/store/usePlayerInterface';
 
 export default function App() {
   // Zustand Store bindings

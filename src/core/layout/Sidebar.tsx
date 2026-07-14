@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Search, Star, Settings, ChevronRight, Tv2, PanelLeftClose } from 'lucide-react';
-import { usePlaylistStore } from '../store/usePlaylistStore';
-import ChannelItem from './ChannelItem';
+import { usePlaylistStore } from '../../features/playlist/store/usePlaylistStore';
+import ChannelItem from '../../features/playlist/components/ChannelItem';
 
 interface SidebarProps {
   onClose: () => void;

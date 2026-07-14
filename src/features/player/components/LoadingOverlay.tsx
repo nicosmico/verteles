@@ -1,5 +1,5 @@
 import React from 'react';
-import LazyImage from '../../../components/LazyImage';
+import LazyImage from '../../../shared/media/LazyImage';
 
 interface LoadingOverlayProps {
   channelName: string;

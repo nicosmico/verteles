@@ -1,7 +1,7 @@
 import React from 'react';
 import { Star } from 'lucide-react';
 import type { ParsedChannel } from '../types';
-import LazyImage from '../../../components/LazyImage';
+import LazyImage from '../../../shared/media/LazyImage';
 
 interface ChannelItemProps {
   channel: ParsedChannel;
