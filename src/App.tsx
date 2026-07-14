@@ -27,6 +27,9 @@ export default function App() {
     toggleFavorite,
     goToNextChannel,
     goToPreviousChannel,
+    isLoadingPlaylist,
+    playlistError,
+    loadDefaultPlaylist,
   } = usePlaylistStore();
 
   const {
@@ -52,6 +55,11 @@ export default function App() {
   // Tizen has no autoplay restrictions so we skip this state there.
   const [needsUserGesture, setNeedsUserGesture] = useState(() => !isTizen());
 
+  // Load the default M3U playlist on first mount.
+  useEffect(() => {
+    loadDefaultPlaylist();
+  }, [loadDefaultPlaylist]);
+
   // Reset player state when channel changes.
   // needsUserGesture is NOT reset here — it only fires once on first app load.
   useEffect(() => {
@@ -70,6 +78,35 @@ export default function App() {
   };
 
   const isCurrentChannelFav = currentChannel ? favorites.includes(currentChannel.id) : false;
+
+  // ── Loading / error screen while the playlist is being fetched ──────────
+  if (isLoadingPlaylist) {
+    return (
+      <div className="flex h-screen w-screen items-center justify-center bg-black text-white">
+        <div className="flex flex-col items-center gap-4">
+          <div className="h-10 w-10 animate-spin rounded-full border-4 border-white/20 border-t-white" />
+          <p className="text-sm text-white/60">Cargando canales…</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (playlistError) {
+    return (
+      <div className="flex h-screen w-screen items-center justify-center bg-black text-white">
+        <div className="flex flex-col items-center gap-3 max-w-sm text-center px-6">
+          <p className="text-lg font-semibold">No se pudo cargar la lista</p>
+          <p className="text-sm text-white/50">{playlistError}</p>
+          <button
+            onClick={loadDefaultPlaylist}
+            className="mt-2 rounded-lg bg-white/10 px-6 py-2 text-sm hover:bg-white/20 transition-colors"
+          >
+            Reintentar
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div
