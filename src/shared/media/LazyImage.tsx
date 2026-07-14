@@ -1,4 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
+
+// Timeout in ms before forcing fallback for images that never fire onLoad/onError
+const LOAD_TIMEOUT_MS = 8000;
 
 interface LazyImageProps {
   src?: string;
@@ -17,19 +20,60 @@ export const LazyImage: React.FC<LazyImageProps> = ({
 }) => {
   const [isLoading, setIsLoading] = useState(!!src);
   const [hasError, setHasError] = useState(!src);
+  const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const imgRef = useRef<HTMLImageElement | null>(null);
 
-  // Reset states if source changes
+  // Reset states and start safety timeout when source changes
   useEffect(() => {
-    setIsLoading(!!src);
-    setHasError(!src);
+    if (timeoutRef.current) clearTimeout(timeoutRef.current);
+
+    if (src) {
+      setIsLoading(true);
+      setHasError(false);
+
+      // Safety net: if the image neither loads nor errors within the timeout, force fallback
+      timeoutRef.current = setTimeout(() => {
+        setIsLoading(false);
+        setHasError(true);
+      }, LOAD_TIMEOUT_MS);
+    } else {
+      setIsLoading(false);
+      setHasError(true);
+    }
+
+    return () => {
+      if (timeoutRef.current) clearTimeout(timeoutRef.current);
+    };
   }, [src]);
 
+  // Handle the race condition where a cached image fires onLoad BEFORE React
+  // attaches the handler — in that case naturalWidth > 0 but isLoading stays true.
+  useEffect(() => {
+    if (!isLoading) return;
+    const img = imgRef.current;
+    if (img && img.complete) {
+      if (img.naturalWidth > 0) {
+        // Image already loaded from cache
+        if (timeoutRef.current) clearTimeout(timeoutRef.current);
+        setIsLoading(false);
+        setHasError(false);
+      } else if (img.naturalWidth === 0 && img.src) {
+        // Image finished but with an error
+        if (timeoutRef.current) clearTimeout(timeoutRef.current);
+        setIsLoading(false);
+        setHasError(true);
+      }
+    }
+  });
+
   const handleLoad = () => {
+    if (timeoutRef.current) clearTimeout(timeoutRef.current);
     setIsLoading(false);
     setHasError(false);
   };
 
   const handleError = () => {
+    if (timeoutRef.current) clearTimeout(timeoutRef.current);
     setIsLoading(false);
     setHasError(true);
   };
@@ -55,9 +99,9 @@ export const LazyImage: React.FC<LazyImageProps> = ({
         </div>
       )}
       <img
+        ref={imgRef}
         src={src}
         alt={alt}
-        loading="lazy"
         onLoad={handleLoad}
         onError={handleError}
         className={`h-full w-full object-cover transition-opacity duration-300 ${
