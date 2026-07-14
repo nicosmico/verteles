@@ -14,6 +14,7 @@ export interface PlayerInterfaceState {
   modal: ModalType;
   setModal: (modal: ModalType) => void;
   resetHideTimer: () => void;
+  toggleInterface: () => void;
 }
 
 let hideTimer: number | null = null;
@@ -68,6 +69,21 @@ export const usePlayerInterface = create<PlayerInterfaceState>((set, get) => {
     },
 
     resetHideTimer,
+
+    toggleInterface: () => {
+      const { showControls, sidebarOpen, modal } = get();
+      if (showControls || sidebarOpen || modal) {
+        // Hide everything
+        set({ showControls: false, sidebarOpen: false, modal: null });
+        if (hideTimer) {
+          window.clearTimeout(hideTimer);
+          hideTimer = null;
+        }
+      } else {
+        // Show controls and start the auto-hide timer
+        resetHideTimer();
+      }
+    },
   };
 });
 

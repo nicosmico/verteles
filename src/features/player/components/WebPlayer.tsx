@@ -1,6 +1,6 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 import Hls from 'hls.js';
-import { VolumeX } from 'lucide-react';
+import { usePlayerInterface } from '../store/usePlayerInterface';
 import type { PlayerProps } from './types';
 
 export const WebPlayer: React.FC<PlayerProps> = ({
@@ -9,8 +9,6 @@ export const WebPlayer: React.FC<PlayerProps> = ({
   onBuffering,
 }) => {
   const videoRef = useRef<HTMLVideoElement>(null);
-  const [isPaused, setIsPaused] = useState(true);
-  const [isMuted, setIsMuted] = useState(true);
 
   // Stable refs for callbacks — prevents stale closures and avoids HLS
   // being destroyed/recreated whenever the parent re-renders.
@@ -41,18 +39,6 @@ export const WebPlayer: React.FC<PlayerProps> = ({
       onBufferingRef.current?.(false);
     };
 
-    const handlePlay = () => {
-      setIsPaused(false);
-    };
-
-    const handlePause = () => {
-      setIsPaused(true);
-    };
-
-    const handleVolumeChange = () => {
-      setIsMuted(video.muted);
-    };
-
     const handleNativeError = (e: Event) => {
       const mediaError = (e.target as HTMLVideoElement).error;
       const errorMsg = mediaError
@@ -66,14 +52,10 @@ export const WebPlayer: React.FC<PlayerProps> = ({
     video.addEventListener('waiting', handleWaiting);
     video.addEventListener('canplay', handleCanPlay);
     video.addEventListener('error', handleNativeError);
-    video.addEventListener('play', handlePlay);
-    video.addEventListener('pause', handlePause);
-    video.addEventListener('volumechange', handleVolumeChange);
 
-    // Try to autoplay muted
+    // Try to autoplay
     const tryAutoplay = async () => {
       try {
-        video.muted = true;
         await video.play();
       } catch (err) {
         console.warn('Fallo al reproducir automáticamente:', err);
@@ -127,9 +109,6 @@ export const WebPlayer: React.FC<PlayerProps> = ({
       video.removeEventListener('waiting', handleWaiting);
       video.removeEventListener('canplay', handleCanPlay);
       video.removeEventListener('error', handleNativeError);
-      video.removeEventListener('play', handlePlay);
-      video.removeEventListener('pause', handlePause);
-      video.removeEventListener('volumechange', handleVolumeChange);
 
       if (hls) {
         hls.destroy();
@@ -138,20 +117,11 @@ export const WebPlayer: React.FC<PlayerProps> = ({
     };
   }, [url]);
 
-  const handlePlayerClick = () => {
-    const video = videoRef.current;
-    if (!video) return;
-    if (video.muted) {
-      video.muted = false;
-    } else {
-      if (video.paused) {
-        video.play().catch((err) => {
-          console.warn('Fallo al reproducir al hacer clic:', err);
-        });
-      } else {
-        video.pause();
-      }
-    }
+  const { toggleInterface } = usePlayerInterface();
+
+  const handlePlayerClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    toggleInterface();
   };
 
   return (
@@ -168,16 +138,7 @@ export const WebPlayer: React.FC<PlayerProps> = ({
           backgroundColor: 'black',
         }}
         playsInline
-        muted
       />
-      {!isPaused && isMuted && (
-        <div className="absolute top-4 right-4 z-20 flex items-center gap-2 bg-black/75 border border-white/10 rounded-full px-4 py-2 text-white shadow-lg animate-fade-in hover:scale-105 transition-transform">
-          <VolumeX className="h-4 w-4 text-amber-500" />
-          <span className="text-xs font-semibold select-none">
-            Silenciado (Haz clic para activar sonido)
-          </span>
-        </div>
-      )}
     </div>
   );
 };
