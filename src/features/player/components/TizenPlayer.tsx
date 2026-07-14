@@ -3,27 +3,20 @@ import type { PlayerProps } from './types';
 
 export const TizenPlayer: React.FC<PlayerProps> = ({
   url,
-  autoplay = true,
-  onPlayStateChange,
   onError,
   onBuffering,
 }) => {
-  // Track whether the component has fully mounted so Effect 2 skips the
-  // initial render — prepareAsync callback in Effect 1 handles the first play.
-  const isMountedRef = useRef(false);
   // Stable refs for callbacks — prevents the main effect from re-running
   // when the parent re-renders and passes new function references.
-  const onPlayStateChangeRef = useRef(onPlayStateChange);
   const onErrorRef = useRef(onError);
   const onBufferingRef = useRef(onBuffering);
 
   useEffect(() => {
-    onPlayStateChangeRef.current = onPlayStateChange;
     onErrorRef.current = onError;
     onBufferingRef.current = onBuffering;
   });
 
-  // Effect 1: Initialize AVPlay — only re-runs when the URL changes.
+  // Initialize AVPlay — only re-runs when the URL changes.
   useEffect(() => {
     const webapis = (window as any).webapis;
     if (!webapis || !webapis.avplay) {
@@ -60,7 +53,6 @@ export const TizenPlayer: React.FC<PlayerProps> = ({
         },
         onstreamcompleted: () => {
           console.log('AVPlay: Transmisión completada');
-          onPlayStateChangeRef.current?.(false);
         },
         onerror: (error: any) => {
           console.error('AVPlay Error de reproducción:', error);
@@ -76,7 +68,6 @@ export const TizenPlayer: React.FC<PlayerProps> = ({
           console.log('AVPlay: Preparación exitosa.');
           try {
             avplay.play();
-            onPlayStateChangeRef.current?.(true);
           } catch (playError: any) {
             console.error('AVPlay: Error al iniciar play:', playError);
             onErrorRef.current?.(`Fallo al iniciar reproducción: ${playError.name || playError}`);
@@ -111,38 +102,9 @@ export const TizenPlayer: React.FC<PlayerProps> = ({
         console.warn('AVPlay exception during close():', closeErr);
       }
 
-      onPlayStateChangeRef.current?.(false);
       onBufferingRef.current?.(false);
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [url]);
-
-  // Effect 2: Handle play/pause imperatively without recreating AVPlay.
-  // Skipped on initial mount — Effect 1 handles the first play via prepareAsync.
-  useEffect(() => {
-    if (!isMountedRef.current) {
-      isMountedRef.current = true;
-      return;
-    }
-
-    const webapis = (window as any).webapis;
-    if (!webapis || !webapis.avplay) return;
-
-    const avplay = webapis.avplay;
-
-    try {
-      if (autoplay) {
-        avplay.play();
-        onPlayStateChangeRef.current?.(true);
-      } else {
-        avplay.pause();
-        onPlayStateChangeRef.current?.(false);
-      }
-    } catch (e: any) {
-      // AVPlay may throw if called before prepareAsync completes — safe to ignore
-      console.warn('AVPlay play/pause control warning:', e.message || e);
-    }
-  }, [autoplay]);
 
   return (
     <object

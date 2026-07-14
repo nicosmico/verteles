@@ -1,13 +1,10 @@
 import React from 'react';
-import { ChevronUp, ChevronDown, Heart, RotateCcw, Play, Pause, Radio } from 'lucide-react';
+import { ChevronUp, ChevronDown, Heart, RotateCcw } from 'lucide-react';
 import type { ParsedChannel } from '../../playlist/types';
 import LazyImage from '../../../shared/media/LazyImage';
 
 interface PlaybackBarProps {
   channel: ParsedChannel;
-  isPlaying: boolean;
-  hasDrifted: boolean;
-  onPlayPauseToggle: () => void;
   onReload: () => void;
   isFavorite: boolean;
   onFavoriteToggle: () => void;
@@ -17,9 +14,6 @@ interface PlaybackBarProps {
 
 export const PlaybackBar: React.FC<PlaybackBarProps> = ({
   channel,
-  isPlaying,
-  hasDrifted,
-  onPlayPauseToggle,
   onReload,
   isFavorite,
   onFavoriteToggle,
@@ -108,7 +102,7 @@ export const PlaybackBar: React.FC<PlaybackBarProps> = ({
             </div>
           </div>
 
-          {/* Right part: Playback Controls (Play/Pause, Reload, Aspect/Res badge) */}
+          {/* Right part: Controls (Reload, resolution/aspect badges) */}
           <div className="flex items-center gap-3.5 w-full md:w-auto justify-end border-t border-bg-border pt-4 md:pt-0 md:border-none">
             <span className="rounded-md bg-[#222] border border-bg-border px-2.5 py-1 text-[11px] font-semibold text-tx-secondary select-none">
               {channel.resolution || '1080p'}
@@ -120,37 +114,15 @@ export const PlaybackBar: React.FC<PlaybackBarProps> = ({
 
             <div className="h-6 w-px bg-bg-border hidden sm:block" />
 
-            {/* Play/Pause control */}
+            {/* Reload Stream button */}
             <button
               type="button"
-              onClick={onPlayPauseToggle}
-              className="w-11 h-11 rounded-xl flex items-center justify-center transition-all bg-white hover:bg-neutral-200 text-neutral-950 active:scale-95 shrink-0 shadow-lg cursor-pointer"
-              title={isPlaying ? 'Pausar' : 'Reproducir'}
+              onClick={onReload}
+              className="w-11 h-11 rounded-xl flex items-center justify-center transition-all bg-bg-card hover:bg-bg-hover text-tx-secondary hover:text-white border border-bg-border active:scale-95 shrink-0 cursor-pointer"
+              title="Recargar transmisión"
             >
-              {isPlaying ? <Pause className="h-5 w-5 fill-current" /> : <Play className="h-5 w-5 fill-current ml-0.5" />}
+              <RotateCcw className="h-4 w-4" />
             </button>
-
-            {/* Reload / Go Live button */}
-            {hasDrifted ? (
-              <button
-                type="button"
-                onClick={onReload}
-                className="flex items-center gap-1.5 px-3 h-11 rounded-xl transition-all bg-accent/15 hover:bg-accent/30 text-accent border border-accent/30 active:scale-95 shrink-0 cursor-pointer"
-                title="Reconectar al stream en vivo"
-              >
-                <Radio className="h-4 w-4" />
-                <span className="text-[11px] font-bold uppercase tracking-wider">Ir al Vivo</span>
-              </button>
-            ) : (
-              <button
-                type="button"
-                onClick={onReload}
-                className="w-11 h-11 rounded-xl flex items-center justify-center transition-all bg-bg-card hover:bg-bg-hover text-tx-secondary hover:text-white border border-bg-border active:scale-95 shrink-0 cursor-pointer"
-                title="Recargar transmisión"
-              >
-                <RotateCcw className="h-4 w-4" />
-              </button>
-            )}
           </div>
 
         </div>

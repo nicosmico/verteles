@@ -28,17 +28,12 @@ export default function App() {
   } = usePlaylistStore();
 
   const {
-    isPlaying,
     isBuffering,
-    hasDrifted,
     errorMsg,
     retryKey,
-    setIsPlaying,
     setIsBuffering,
     setErrorMsg,
-    togglePlayPause,
     triggerRetry,
-    resetDrift,
   } = usePlayerStore();
 
   // Player Interface Custom Hook (handles sidebarOpen, showControls, auto-hide logic, and active modal)
@@ -55,11 +50,9 @@ export default function App() {
   useEffect(() => {
     if (currentChannel) {
       setErrorMsg(null);
-      setIsPlaying(true);
       setIsBuffering(true);
-      resetDrift();
     }
-  }, [currentChannel, setErrorMsg, setIsPlaying, setIsBuffering, resetDrift]);
+  }, [currentChannel, setErrorMsg, setIsBuffering]);
 
   const isCurrentChannelFav = currentChannel ? favorites.includes(currentChannel.id) : false;
 
@@ -75,8 +68,6 @@ export default function App() {
           <VideoPlayer
             key={`${currentChannel.id}-${retryKey}`}
             url={currentChannel.url}
-            autoplay={isPlaying}
-            onPlayStateChange={setIsPlaying}
             onBuffering={setIsBuffering}
             onError={setErrorMsg}
           />
@@ -92,7 +83,7 @@ export default function App() {
       )}
 
       {/* Loading / Connecting Overlay */}
-      {isBuffering && isPlaying && currentChannel && !errorMsg && (
+      {isBuffering && currentChannel && !errorMsg && (
         <LoadingOverlay
           channelName={currentChannel.name}
           logo={currentChannel.logo}
@@ -138,9 +129,6 @@ export default function App() {
       {currentChannel && (showControls || errorMsg) && (
         <PlaybackBar
           channel={currentChannel}
-          isPlaying={isPlaying}
-          hasDrifted={hasDrifted}
-          onPlayPauseToggle={togglePlayPause}
           onReload={triggerRetry}
           isFavorite={isCurrentChannelFav}
           onFavoriteToggle={() => toggleFavorite(currentChannel.id)}

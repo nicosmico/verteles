@@ -4,29 +4,21 @@ import type { PlayerProps } from './types';
 
 export const WebPlayer: React.FC<PlayerProps> = ({
   url,
-  autoplay = true,
-  onPlayStateChange,
   onError,
   onBuffering,
 }) => {
   const videoRef = useRef<HTMLVideoElement>(null);
-  // Track whether the component has fully mounted so Effect 2 skips the
-  // initial render — the first play is handled by MANIFEST_PARSED in Effect 1.
-  const isMountedRef = useRef(false);
 
   // Stable refs for callbacks — prevents stale closures and avoids HLS
   // being destroyed/recreated whenever the parent re-renders.
-  const onPlayStateChangeRef = useRef(onPlayStateChange);
   const onErrorRef = useRef(onError);
   const onBufferingRef = useRef(onBuffering);
 
   useEffect(() => {
-    onPlayStateChangeRef.current = onPlayStateChange;
     onErrorRef.current = onError;
     onBufferingRef.current = onBuffering;
   });
 
-  // Effect 1: Initialize HLS and attach event listeners — only re-runs when URL changes.
   useEffect(() => {
     const video = videoRef.current;
     if (!video) return;
@@ -35,12 +27,10 @@ export const WebPlayer: React.FC<PlayerProps> = ({
     let hls: Hls | null = null;
 
     const handlePlaying = () => {
-      onPlayStateChangeRef.current?.(true);
+      // Unmute on first play: video starts muted to bypass browser autoplay policy,
+      // then is unmuted immediately once playback is confirmed.
+      if (video.muted) video.muted = false;
       onBufferingRef.current?.(false);
-    };
-
-    const handlePause = () => {
-      onPlayStateChangeRef.current?.(false);
     };
 
     const handleWaiting = () => {
@@ -61,7 +51,6 @@ export const WebPlayer: React.FC<PlayerProps> = ({
     };
 
     video.addEventListener('playing', handlePlaying);
-    video.addEventListener('pause', handlePause);
     video.addEventListener('waiting', handleWaiting);
     video.addEventListener('canplay', handleCanPlay);
     video.addEventListener('error', handleNativeError);
@@ -114,7 +103,6 @@ export const WebPlayer: React.FC<PlayerProps> = ({
 
     return () => {
       video.removeEventListener('playing', handlePlaying);
-      video.removeEventListener('pause', handlePause);
       video.removeEventListener('waiting', handleWaiting);
       video.removeEventListener('canplay', handleCanPlay);
       video.removeEventListener('error', handleNativeError);
@@ -126,26 +114,6 @@ export const WebPlayer: React.FC<PlayerProps> = ({
     };
   }, [url]);
 
-  // Effect 2: Handle play/pause imperatively without touching the HLS instance.
-  // Skipped on initial mount — Effect 1 handles the first play via MANIFEST_PARSED.
-  useEffect(() => {
-    if (!isMountedRef.current) {
-      isMountedRef.current = true;
-      return;
-    }
-
-    const video = videoRef.current;
-    if (!video) return;
-
-    if (autoplay) {
-      video.play().catch((err) => {
-        console.warn('Error al reanudar reproducción:', err);
-      });
-    } else {
-      video.pause();
-    }
-  }, [autoplay]);
-
   return (
     <video
       ref={videoRef}
@@ -156,6 +124,7 @@ export const WebPlayer: React.FC<PlayerProps> = ({
         backgroundColor: 'black',
       }}
       playsInline
+      muted
     />
   );
 };
