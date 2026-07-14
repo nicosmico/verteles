@@ -15,7 +15,7 @@ export const LoadingOverlay: React.FC<LoadingOverlayProps> = ({
   fallbackText = '?',
 }) => {
   return (
-    <div className="absolute inset-0 z-30 flex flex-col items-center justify-center bg-[#0a0a0a] transition-all duration-300">
+    <div className="absolute inset-0 z-11 flex flex-col items-center justify-center bg-[#0a0a0a] transition-all duration-300">
       {/* Ambient background glow */}
       <div
         className="absolute inset-0 opacity-15 transition-all duration-1000 pointer-events-none"
