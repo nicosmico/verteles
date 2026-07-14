@@ -35,7 +35,7 @@ export const usePlayerInterface = create<PlayerInterfaceState>((set, get) => {
   };
 
   return {
-    sidebarOpen: true,
+    sidebarOpen: false,
     showControls: true,
     modal: null,
 
