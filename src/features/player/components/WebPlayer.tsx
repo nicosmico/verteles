@@ -15,6 +15,7 @@ export const WebPlayer: React.FC<PlayerProps> = ({
     const video = videoRef.current;
     if (!video) return;
 
+    onBuffering?.(true);
     let hls: Hls | null = null;
 
     // Callback helpers
@@ -41,6 +42,7 @@ export const WebPlayer: React.FC<PlayerProps> = ({
         ? `Error nativo del reproductor: ${mediaError.message} (Código ${mediaError.code})`
         : 'Error nativo desconocido en el reproductor de video.';
       onError?.(errorMsg);
+      onBuffering?.(false);
     };
 
     // Attach native video element listeners
@@ -92,12 +94,14 @@ export const WebPlayer: React.FC<PlayerProps> = ({
               break;
             default:
               onError?.(`Error fatal de reproducción (HLS.js): ${data.details}`);
+              onBuffering?.(false);
               break;
           }
         }
       });
     } else {
       onError?.('La reproducción HLS no está soportada en este navegador.');
+      onBuffering?.(false);
     }
 
     return () => {
