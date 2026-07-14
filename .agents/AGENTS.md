@@ -5,16 +5,20 @@ Este archivo define las reglas de desarrollo, la arquitectura y los requisitos e
 ## 1. Objetivo Principal y Arquitectura
 *   **Enfoque 100% Frontend:** Aplicación del lado del cliente sin backend para la reproducción o gestión de contenido.
 *   **Tecnologías Base:** Uso de **React** como librería principal de UI, **Zustand** para la gestión de estado global, **Tailwind CSS** para los estilos y **Vite** como empaquetador y entorno de desarrollo.
-*   **Estructura de Proyecto:** Adopción de una arquitectura de carpetas **Feature-based**, agrupando componentes, hooks, estados y lógica específica por dominio funcional bajo `src/features/` para garantizar la mantenibilidad.
+*   **Estructura de Proyecto:** Adopción de una arquitectura de carpetas por **capas y dominios**, combinando el enfoque Feature-based con una separación explícita entre infraestructura core, utilidades compartidas y módulos funcionales. Ver `ARCHITECTURE.md` para la referencia completa y detallada.
 *   **Estructura de Carpetas Base:**
-    *   `src/components/`: Componentes globales compartidos.
-    *   `src/hooks/`: Hooks globales y utilidades de React compartidas.
-    *   `src/services/`: Capa de servicios compartidos (e.g. wrapper de IndexedDB, parser).
-    *   `src/utils/`: Funciones de utilidad pura.
-    *   `src/features/`: Módulos principales:
-        *   `src/features/player/`: Lógica del reproductor de video (avplay, hls.js).
-        *   `src/features/playlist/`: Gestión e importación de listas M3U y IndexedDB.
-        *   `src/features/navigation/`: Control de foco D-pad y Spatial Navigation.
+    *   `src/core/`: Infraestructura fundamental de la aplicación, organizada en **sub-dominios feature-based**. Cada sub-carpeta agrupa toda la lógica relacionada (componentes, hooks, servicios) de ese dominio core.
+        *   `src/core/layout/`: Shell visual de la app (TopBar, Sidebar y similares).
+        *   `src/core/navigation/`: Control de foco D-pad y Spatial Navigation.
+        *   `src/core/storage/`: Wrapper unificado de persistencia (IndexedDB / localforage).
+    *   `src/shared/`: Utilidades transversales reutilizables sin estado de dominio propio, organizadas en **sub-dominios feature-based**. Cada sub-carpeta agrupa componentes y hooks relacionados por responsabilidad.
+        *   `src/shared/network/`: Indicador de estado de red (componente + hook).
+        *   `src/shared/clock/`: Hook de reloj en tiempo real.
+        *   `src/shared/media/`: Utilidades de medios compartidas (e.g. LazyImage).
+    *   `src/features/`: Módulos funcionales autocontenidos. Cada feature agrupa sus propios componentes, hooks, store y services. Nada de lo que está aquí debe "escaparse" a `shared/` o `core/`.
+        *   `src/features/player/`: Lógica del reproductor de video (AVPlay, hls.js), overlays y PlaybackBar.
+        *   `src/features/playlist/`: Gestión e importación de listas M3U, modales y gestión de canales.
+    *   `src/utils/`: Funciones de utilidad pura sin efectos secundarios (e.g. detección de plataforma).
 
 ## 2. Compatibilidad y Despliegue
 *   **Versión Tizen OS (MVP Final):** Compilación empaquetada ejecutada localmente en la TV, sirviendo como prueba final sin restricciones de CORS.
