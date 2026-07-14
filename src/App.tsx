@@ -81,7 +81,7 @@ export default function App() {
       {currentChannel && !errorMsg && !needsUserGesture && (
         <div className="absolute inset-0 w-full h-full z-10">
           <VideoPlayer
-            key={`${currentChannel.id}-${retryKey}`}
+            key={retryKey}
             url={currentChannel.url}
             onBuffering={setIsBuffering}
             onError={setErrorMsg}
