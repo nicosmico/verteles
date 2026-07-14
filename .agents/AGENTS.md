@@ -89,3 +89,22 @@ Desarrollo de la suite de pruebas End-to-End (E2E) con Playwright simulando fluj
 ## 9. Documentación Oficial de Samsung Tizen
 *   **Alineación con la Documentación Oficial**: A partir de ahora, todas las decisiones de diseño, implementaciones de API, ciclo de vida de componentes y configuraciones de empaquetado de la aplicación Tizen deben estar estrictamente fundamentadas en y seguir la documentación oficial de Samsung Tizen (https://samsungtizenos.com/docs/application/web/overview).
 
+## 10. Revisión Obligatoria Post-Edición (Buenas Prácticas y Rendimiento)
+*   **Regla Obligatoria**: Después de **cada creación o modificación de código**, el agente DEBE realizar una revisión crítica del código producido antes de finalizar su turno.
+*   **Checklist de revisión mínima** (aplicar según el tipo de archivo):
+    *   **React / Hooks:**
+        *   ¿Los `useEffect` tienen el array de dependencias correcto? ¿Se evita el array vacío sin justificación?
+        *   ¿Los callbacks y valores derivados costosos están memoizados (`useCallback`, `useMemo`) donde corresponde?
+        *   ¿Los estados relacionados se agrupan en un solo objeto/enum para evitar re-renders múltiples por llamadas a `setState` separadas?
+        *   ¿Los componentes están envueltos en `React.memo` si reciben las mismas props frecuentemente?
+    *   **Listas y Virtualización:**
+        *   ¿Las listas de más de ~50 ítems usan Virtual Scrolling?
+        *   ¿Las imágenes usan carga diferida con fallback robusto?
+    *   **Gestión de Estado (Zustand):**
+        *   ¿Los selectores son atómicos para evitar re-renders globales?
+        *   ¿Se evita suscribirse al store completo cuando solo se necesita una propiedad?
+    *   **General:**
+        *   ¿Se evitan closures que capturen referencias obsoletas?
+        *   ¿Se limpian correctamente los efectos secundarios (timeouts, listeners, subscripciones)?
+        *   ¿Se evita la creación innecesaria de objetos/arrays dentro del render?
+*   **Acción esperada**: Si se detecta algún problema en la revisión, corregirlo **en el mismo turno** antes de entregar al usuario. Si el problema detectado implica un cambio mayor (refactor de arquitectura), notificarlo explícitamente al usuario con una explicación y propuesta.
