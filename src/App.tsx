@@ -89,7 +89,7 @@ export default function App() {
       )}
 
       {/* Loading / Connecting Overlay */}
-      {isBuffering && currentChannel && !errorMsg && (
+      {isBuffering && isPlaying && currentChannel && !errorMsg && (
         <LoadingOverlay
           channelName={currentChannel.name}
           logo={currentChannel.logo}

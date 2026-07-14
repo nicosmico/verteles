@@ -11,6 +11,8 @@ export const WebPlayer: React.FC<PlayerProps> = ({
 }) => {
   const videoRef = useRef<HTMLVideoElement>(null);
 
+  // Effect 1: Initialize HLS and attach event listeners — only re-runs when URL changes.
+  // autoplay is intentionally excluded from deps to avoid destroying HLS on play/pause.
   useEffect(() => {
     const video = videoRef.current;
     if (!video) return;
@@ -56,11 +58,9 @@ export const WebPlayer: React.FC<PlayerProps> = ({
     if (video.canPlayType('application/vnd.apple.mpegurl')) {
       // Native HLS support (e.g. Safari)
       video.src = url;
-      if (autoplay) {
-        video.play().catch((err) => {
-          console.warn('Fallo al reproducir automáticamente:', err);
-        });
-      }
+      video.play().catch((err) => {
+        console.warn('Fallo al reproducir automáticamente:', err);
+      });
     } else if (Hls.isSupported()) {
       // Use HLS.js
       hls = new Hls({
@@ -73,11 +73,9 @@ export const WebPlayer: React.FC<PlayerProps> = ({
       hls.attachMedia(video);
 
       hls.on(Hls.Events.MANIFEST_PARSED, () => {
-        if (autoplay) {
-          video.play().catch((err) => {
-            console.warn('Fallo al reproducir automáticamente (HLS.js):', err);
-          });
-        }
+        video.play().catch((err) => {
+          console.warn('Fallo al reproducir automáticamente (HLS.js):', err);
+        });
       });
 
       hls.on(Hls.Events.ERROR, (_event, data) => {
@@ -117,7 +115,22 @@ export const WebPlayer: React.FC<PlayerProps> = ({
       }
       video.src = '';
     };
-  }, [url, autoplay, onPlayStateChange, onError, onBuffering]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [url]);
+
+  // Effect 2: Handle play/pause imperatively without touching the HLS instance.
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    if (autoplay) {
+      video.play().catch((err) => {
+        console.warn('Error al reanudar reproducción:', err);
+      });
+    } else {
+      video.pause();
+    }
+  }, [autoplay]);
 
   return (
     <video
