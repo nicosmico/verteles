@@ -9,7 +9,7 @@ const fmtTime = (d: Date) =>
   d.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' });
 
 export const TopBar: React.FC = () => {
-  const { errorMsg, isPlaying, hasDrifted } = usePlayerStore();
+  const { errorMsg, isPlaying, isBuffering, hasDrifted } = usePlayerStore();
   const { showControls, setSidebarOpen } = usePlayerInterface();
   const now = useClock();
 
@@ -38,6 +38,11 @@ export const TopBar: React.FC = () => {
             <span className="flex items-center gap-1.5 rounded-md bg-red-900/60 border border-red-500/30 px-2.5 py-1 text-[11px] font-bold uppercase tracking-widest text-red-400">
               <span className="h-1.5 w-1.5 rounded-full bg-red-400" />
               No Disponible
+            </span>
+          ) : isBuffering && isPlaying ? (
+            <span className="flex items-center gap-1.5 rounded-md bg-[#111]/80 border border-white/15 px-2.5 py-1 text-[11px] font-bold uppercase tracking-widest text-white/60">
+              <span className="h-1.5 w-1.5 animate-spin rounded-full border border-t-white/80 border-r-white/20 border-b-white/20 border-l-white/20" />
+              Cargando
             </span>
           ) : isPlaying && !hasDrifted ? (
             <span className="flex items-center gap-1.5 rounded-md bg-accent px-2.5 py-1 text-[11px] font-bold uppercase tracking-widest text-white">
