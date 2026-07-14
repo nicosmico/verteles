@@ -114,3 +114,14 @@ Desarrollo de la suite de pruebas End-to-End (E2E) con Playwright simulando fluj
         *   ¿Se limpian correctamente los efectos secundarios (timeouts, listeners, subscripciones)?
         *   ¿Se evita la creación innecesaria de objetos/arrays dentro del render?
 *   **Acción esperada**: Si se detecta algún problema en la revisión, corregirlo **en el mismo turno** antes de entregar al usuario. Si el problema detectado implica un cambio mayor (refactor de arquitectura), notificarlo explícitamente al usuario con una explicación y propuesta.
+
+## 11. Coherencia Visual y Referencias de Diseño UI
+*   **Regla Obligatoria**: Toda creación o modificación de componentes de diseño UI debe mantener estricta coherencia con el sistema visual actual del proyecto.
+*   **Imágenes de Referencia**: Antes de implementar cualquier componente visual nuevo o modificar uno existente, el agente DEBE revisar las imágenes de referencia ubicadas en la carpeta `docs/ui/` del repositorio para asegurarse de que el resultado sea consistente con el diseño establecido.
+*   **Checklist de coherencia visual** (aplicar en cada creación/modificación de UI):
+    *   ¿El componente respeta la paleta de colores, tipografía y espaciado existente en el sistema de diseño actual?
+    *   ¿El estilo visual (bordes, sombras, opacidad, glassmorphism, gradientes) es coherente con los componentes ya implementados?
+    *   ¿Las animaciones y transiciones siguen el mismo patrón de duración y easing que el resto de la app?
+    *   ¿El componente nuevo o modificado se ve integrado y no "ajeno" al resto de la interfaz? ¿Pasa el "test de coherencia visual" comparado con las capturas en `docs/ui/`?
+    *   ¿Se consultaron las imágenes de referencia en `docs/ui/` antes de tomar decisiones de diseño?
+*   **Acción esperada**: Si un componente no puede encajar visualmente con el diseño actual o las imágenes de referencia, notificarlo al usuario y proponer alternativas antes de implementar.
