@@ -36,6 +36,20 @@ function getFallbackText(name: string): string {
 
 const rawMockChannels = [
   {
+    id: 'ch-mega',
+    name: 'Mega',
+    url: 'https://unlimited1-cl-isp.dps.live/mega/mega.smil/playlist.m3u8',
+    logo: 'https://upload.wikimedia.org/wikipedia/commons/9/93/Logotipo_de_Mega_%282015-2020%29.svg',
+    group: 'General',
+    resolution: '1080p',
+    program: {
+      title: 'Mucho Gusto',
+      start: '08:00',
+      end: '12:00',
+      progress: 0.72,
+    },
+  },
+  {
     id: 'ch-chilevision',
     name: 'Chilevisión',
     url: 'https://redirector.rudo.video/hls-video/10b92cafdf3646cbc1e727f3dc76863621a327fd/chv/chv.smil/playlist.m3u8',
@@ -61,6 +75,20 @@ const rawMockChannels = [
       start: '08:00',
       end: '13:00',
       progress: 0.55,
+    },
+  },
+  {
+    id: 'ch-tvn',
+    name: 'TVN',
+    url: 'https://mdstrm.com/live-stream-playlist-v/555c9a91eb4886825b07ee7b.m3u8',
+    logo: 'https://upload.wikimedia.org/wikipedia/commons/3/33/Logotipo_de_Televisi%C3%B2n_Nacional_de_Chile.svg',
+    group: 'General',
+    resolution: '1080p',
+    program: {
+      title: 'Buenos Días a Todos',
+      start: '07:00',
+      end: '12:00',
+      progress: 0.48,
     },
   },
   {
