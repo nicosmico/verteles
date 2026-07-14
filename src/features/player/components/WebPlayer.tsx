@@ -10,6 +10,9 @@ export const WebPlayer: React.FC<PlayerProps> = ({
   onBuffering,
 }) => {
   const videoRef = useRef<HTMLVideoElement>(null);
+  // Track whether the component has fully mounted so Effect 2 skips the
+  // initial render — the first play is handled by MANIFEST_PARSED in Effect 1.
+  const isMountedRef = useRef(false);
 
   // Stable refs for callbacks — prevents stale closures and avoids HLS
   // being destroyed/recreated whenever the parent re-renders.
@@ -124,7 +127,13 @@ export const WebPlayer: React.FC<PlayerProps> = ({
   }, [url]);
 
   // Effect 2: Handle play/pause imperatively without touching the HLS instance.
+  // Skipped on initial mount — Effect 1 handles the first play via MANIFEST_PARSED.
   useEffect(() => {
+    if (!isMountedRef.current) {
+      isMountedRef.current = true;
+      return;
+    }
+
     const video = videoRef.current;
     if (!video) return;
 

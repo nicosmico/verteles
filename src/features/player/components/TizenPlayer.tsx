@@ -8,6 +8,9 @@ export const TizenPlayer: React.FC<PlayerProps> = ({
   onError,
   onBuffering,
 }) => {
+  // Track whether the component has fully mounted so Effect 2 skips the
+  // initial render — prepareAsync callback in Effect 1 handles the first play.
+  const isMountedRef = useRef(false);
   // Stable refs for callbacks — prevents the main effect from re-running
   // when the parent re-renders and passes new function references.
   const onPlayStateChangeRef = useRef(onPlayStateChange);
@@ -115,7 +118,13 @@ export const TizenPlayer: React.FC<PlayerProps> = ({
   }, [url]);
 
   // Effect 2: Handle play/pause imperatively without recreating AVPlay.
+  // Skipped on initial mount — Effect 1 handles the first play via prepareAsync.
   useEffect(() => {
+    if (!isMountedRef.current) {
+      isMountedRef.current = true;
+      return;
+    }
+
     const webapis = (window as any).webapis;
     if (!webapis || !webapis.avplay) return;
 
