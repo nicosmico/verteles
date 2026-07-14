@@ -38,14 +38,27 @@ export const WebPlayer: React.FC<PlayerProps> = ({ url, onError, onBuffering }) 
     video.addEventListener('error', onNativeError);
 
     let hls: Hls | null = null;
+    // For Safari native HLS — one-shot play trigger; tracked for proper cleanup.
+    let onCanPlayThrough: (() => void) | null = null;
 
     if (video.canPlayType('application/vnd.apple.mpegurl')) {
-      // Safari — native HLS
+      // Safari — native HLS. Play once canplay fires (user gesture already happened).
       video.src = url;
+      onCanPlayThrough = () => {
+        video.play().catch(() => {/* autoplay blocked despite gesture — silently ignore */});
+        if (onCanPlayThrough) video.removeEventListener('canplay', onCanPlayThrough);
+        onCanPlayThrough = null;
+      };
+      video.addEventListener('canplay', onCanPlayThrough);
     } else if (Hls.isSupported()) {
       hls = new Hls({ enableWorker: true, lowLatencyMode: true, backBufferLength: 60 });
       hls.loadSource(url);
       hls.attachMedia(video);
+
+      // Play as soon as manifest is ready — user gesture already satisfied by ClickToPlayOverlay.
+      hls.on(Hls.Events.MANIFEST_PARSED, () => {
+        video.play().catch(() => {/* silently ignore */});
+      });
 
       hls.on(Hls.Events.ERROR, (_e, data) => {
         if (!data.fatal) return;
@@ -71,6 +84,7 @@ export const WebPlayer: React.FC<PlayerProps> = ({ url, onError, onBuffering }) 
       video.removeEventListener('waiting', onWaiting);
       video.removeEventListener('canplay', onCanPlay);
       video.removeEventListener('error', onNativeError);
+      if (onCanPlayThrough) video.removeEventListener('canplay', onCanPlayThrough);
       hls?.destroy();
       video.src = '';
     };
@@ -85,7 +99,6 @@ export const WebPlayer: React.FC<PlayerProps> = ({ url, onError, onBuffering }) 
     >
       <video
         ref={videoRef}
-        autoPlay
         playsInline
         style={{ width: '100%', height: '100%', objectFit: 'contain', backgroundColor: 'black' }}
       />

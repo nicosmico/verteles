@@ -1,4 +1,5 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import { isTizen } from './utils/platform';
 
 import { usePlaylistStore } from './features/playlist/store/usePlaylistStore';
 import { usePlayerStore } from './features/player/store/usePlayerStore';
@@ -8,6 +9,7 @@ import { VideoPlayer } from './features/player';
 import VisualStream from './features/player/components/VisualStream';
 import ErrorOverlay from './features/player/components/ErrorOverlay';
 import LoadingOverlay from './features/player/components/LoadingOverlay';
+import ClickToPlayOverlay from './features/player/components/ClickToPlayOverlay';
 import Sidebar from './core/layout/Sidebar';
 import PlaybackBar from './features/player/components/PlaybackBar';
 import ListsModal from './features/playlist/components/ListsModal';
@@ -46,13 +48,26 @@ export default function App() {
     setModal,
   } = usePlayerInterface();
 
-  // Reset player state and error when channel changes
+  // On web: require an explicit user gesture before initiating playback.
+  // Tizen has no autoplay restrictions so we skip this state there.
+  const [needsUserGesture, setNeedsUserGesture] = useState(() => !isTizen());
+
+  // Reset player state when channel changes.
+  // needsUserGesture is NOT reset here — it only fires once on first app load.
   useEffect(() => {
     if (currentChannel) {
       setErrorMsg(null);
-      setIsBuffering(true);
+      // Only set buffering if the user has already unlocked playback (or we're on Tizen).
+      if (!needsUserGesture) {
+        setIsBuffering(true);
+      }
     }
-  }, [currentChannel, setErrorMsg, setIsBuffering]);
+  }, [currentChannel, setErrorMsg, setIsBuffering, needsUserGesture]);
+
+  const handleUserPlay = () => {
+    setNeedsUserGesture(false);
+    setIsBuffering(true);
+  };
 
   const isCurrentChannelFav = currentChannel ? favorites.includes(currentChannel.id) : false;
 
@@ -62,8 +77,8 @@ export default function App() {
       onMouseMove={resetHideTimer}
       onClick={resetHideTimer}
     >
-      {/* Full-screen video */}
-      {currentChannel && !errorMsg && (
+      {/* Full-screen video — only mounted after user gesture on web */}
+      {currentChannel && !errorMsg && !needsUserGesture && (
         <div className="absolute inset-0 w-full h-full z-10">
           <VideoPlayer
             key={`${currentChannel.id}-${retryKey}`}
@@ -74,6 +89,17 @@ export default function App() {
         </div>
       )}
 
+      {/* Click-to-Play overlay — only on web, before user triggers playback */}
+      {currentChannel && needsUserGesture && !errorMsg && (
+        <ClickToPlayOverlay
+          channelName={currentChannel.name}
+          logo={currentChannel.logo}
+          fallbackColor={currentChannel.fallbackColor}
+          fallbackText={currentChannel.fallbackText}
+          onPlay={handleUserPlay}
+        />
+      )}
+
       {/* Particles fallback when there is an error */}
       {currentChannel && errorMsg && (
         <VisualStream
@@ -82,8 +108,8 @@ export default function App() {
         />
       )}
 
-      {/* Loading / Connecting Overlay */}
-      {isBuffering && currentChannel && !errorMsg && (
+      {/* Loading / Connecting Overlay — only shown after user has clicked play */}
+      {isBuffering && !needsUserGesture && currentChannel && !errorMsg && (
         <LoadingOverlay
           channelName={currentChannel.name}
           logo={currentChannel.logo}
