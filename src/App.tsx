@@ -30,6 +30,7 @@ export default function App() {
   const {
     isPlaying,
     isBuffering,
+    hasDrifted,
     errorMsg,
     retryKey,
     setIsPlaying,
@@ -37,6 +38,7 @@ export default function App() {
     setErrorMsg,
     togglePlayPause,
     triggerRetry,
+    resetDrift,
   } = usePlayerStore();
 
   // Player Interface Custom Hook (handles sidebarOpen, showControls, auto-hide logic, and active modal)
@@ -55,8 +57,9 @@ export default function App() {
       setErrorMsg(null);
       setIsPlaying(true);
       setIsBuffering(true);
+      resetDrift();
     }
-  }, [currentChannel, setErrorMsg, setIsPlaying, setIsBuffering]);
+  }, [currentChannel, setErrorMsg, setIsPlaying, setIsBuffering, resetDrift]);
 
   const isCurrentChannelFav = currentChannel ? favorites.includes(currentChannel.id) : false;
 
@@ -136,6 +139,7 @@ export default function App() {
         <PlaybackBar
           channel={currentChannel}
           isPlaying={isPlaying}
+          hasDrifted={hasDrifted}
           onPlayPauseToggle={togglePlayPause}
           onReload={triggerRetry}
           isFavorite={isCurrentChannelFav}
