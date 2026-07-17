@@ -20,3 +20,6 @@ Implementación obligatoria de *Virtual Scrolling* (virtualización de listas) p
 
 ## Hito 7: Testing Completo y QA
 Desarrollo de la suite de pruebas End-to-End (E2E) con Playwright simulando flujos críticos del usuario (Happy Path). Cobertura final de tests de integración para los flujos del estado global (Zustand) y pruebas unitarias de lógica pura en Vitest. Validación final de instalación y ejecución en simulador/TV física.
+
+## Hito 8: Chromecast y airplay
+Solo para web
