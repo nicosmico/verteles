@@ -43,7 +43,7 @@ export const PlaybackBar: React.FC<PlaybackBarProps> = ({
                 alt={channel.name}
                 fallbackColor={channel.fallbackColor}
                 fallbackText={channel.fallbackText}
-                className="grid h-12 w-12 2xl:h-16 2xl:w-16 place-items-center rounded-xl text-base 2xl:text-xl font-extrabold text-white shadow-md"
+                className="h-12 w-12 2xl:h-16 2xl:w-16 overflow-hidden rounded-xl text-base 2xl:text-xl font-extrabold text-white shadow-md"
               />
               
               <button

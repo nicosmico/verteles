@@ -129,7 +129,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
       </div>
 
       {/* Channel Grid List */}
-      <div className="flex-1 overflow-y-auto py-2">
+      <div className="flex-1 overflow-y-auto py-2 pb-4">
         {filteredChannels.map((ch) => {
           const isCurrent = currentChannel ? ch.id === currentChannel.id : false;
           const isFav = favorites.includes(ch.id);

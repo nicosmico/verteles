@@ -32,7 +32,7 @@ export const ChannelItem: React.FC<ChannelItemProps> = ({
         alt={channel.name}
         fallbackColor={channel.fallbackColor}
         fallbackText={channel.fallbackText}
-        className="relative grid h-12 w-12 shrink-0 place-items-center overflow-hidden rounded-lg text-sm font-bold text-white shadow-sm"
+        className="h-12 w-12 shrink-0 overflow-hidden rounded-lg text-sm font-bold text-white shadow-sm"
       />
 
       {/* Info */}
