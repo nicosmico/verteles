@@ -38,3 +38,6 @@ docker-compose.yml
 # Playwright reports
 playwright-report/
 test-results/
+
+# Firebase CLI local cache
+.firebase/
