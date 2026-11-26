@@ -16,6 +16,13 @@ _Avoid_: playlist (en la UI), M3U (para referirse a la lista ya agregada), fuent
 Una señal en vivo reproducible que pertenece a una Lista, con nombre, logo opcional y Grupo opcional.
 _Avoid_: stream (el stream es la URL técnica del canal, no el canal), señal
 
+**Lista activa** (`activePlaylist`):
+La única Lista cuyos Canales se recorren al hacer Zapping. Siempre hay exactamente una.
+
+**Número de canal** (`channelNumber`):
+La posición del Canal dentro de su Lista, empezando en 1. Se ignora `tvg-chno`.
+_Avoid_: LCN, dial
+
 **Grupo** (`Group`):
 Una categoría de Canales tal como la declara la Lista (por ejemplo "Noticias" o "Deportes").
 _Avoid_: categoría, género

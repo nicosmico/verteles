@@ -5,4 +5,4 @@ La app se usa en un televisor Samsung propio, y soportar modelos más antiguos (
 ## Consequences
 
 - Tailwind v4 queda descartado (requiere Chrome 111+: `oklch`, `color-mix`, cascade layers).
-- Si el televisor real del usuario resulta ser anterior a 2022, este ADR se revisa: el piso es el televisor donde realmente se usa la app.
+- El televisor del usuario (Samsung QN50QEF1AGXZS, serie 2025, gama de entrada) supera este piso holgadamente. El piso se mantiene en 2022 a propósito, para no depender de APIs que solo existen en ese modelo; como su CPU es modesta, el rendimiento sigue siendo prioridad.
