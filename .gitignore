@@ -25,19 +25,14 @@ dist-ssr
 
 # Tizen package and certificates
 *.wgt
-verteves.wgt
+
 certs/
 *.p12
 *.pem
 *.key
 *.pub
 
-# Docker local configurations
-docker-compose.yml
-
 # Playwright reports
 playwright-report/
 test-results/
 
-# Firebase CLI local cache
-.firebase/
