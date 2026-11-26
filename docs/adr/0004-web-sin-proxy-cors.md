@@ -1,0 +1,3 @@
+# La versión web no usa proxy para CORS
+
+En el navegador, muchas Listas y streams IPTV no envían cabeceras CORS (o son `http` dentro de una página `https`) y no se pueden reproducir. En lugar de montar un proxy propio, que agrega costo, infraestructura y nos convierte en redistribuidores de los streams, la web reproduce solo lo que el navegador permite y muestra esos canales como **Canal no disponible**, sin mencionar CORS. Tampoco hay un campo para configurar un proxy. En desarrollo local sí se permite un proxy (el del servidor de Vite) cuando haga falta. En Tizen y webOS empaquetados el problema no existe.
