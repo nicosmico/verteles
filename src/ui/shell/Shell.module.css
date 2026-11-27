@@ -45,6 +45,8 @@
 .yellow::before { background: var(--color-key-yellow); }
 
 .toast {
+  /* A notice never captures taps meant for what is underneath. */
+  pointer-events: none;
   position: absolute;
   left: 50%;
   bottom: var(--space-8);
