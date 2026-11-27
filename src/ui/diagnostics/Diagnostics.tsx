@@ -7,6 +7,8 @@ interface Props {
   info: SystemInfo;
   lastKey: KeyPress | null;
   playlist: PlaylistProbe;
+  /** Launch count, or null when the platform cannot persist. Undefined while loading. */
+  launches: number | null | undefined;
 }
 
 const PLATFORM_LABELS: Record<SystemInfo['platform'], string> = {
@@ -28,6 +30,7 @@ export function Diagnostics(props: Props) {
         value: `${info.viewport.width}×${info.viewport.height} @${info.viewport.pixelRatio}x`,
       },
       { label: 'Lista de Chile', value: describePlaylist(props.playlist) },
+      { label: 'Aperturas', value: describeLaunches(props.launches) },
       { label: 'Última tecla', value: describeKey(props.lastKey) },
       { label: 'User agent', value: info.userAgent, long: true },
     ];
@@ -66,4 +69,9 @@ function describePlaylist(probe: PlaylistProbe): string {
     case 'loaded':
       return `${probe.channels} Canales · ${probe.sources} Fuentes · descarga ${probe.downloadMs} ms · procesamiento ${probe.parseMs} ms`;
   }
+}
+
+function describeLaunches(launches: number | null | undefined): string {
+  if (launches === undefined) return '…';
+  return launches === null ? 'Sin persistencia (IndexedDB no disponible)' : String(launches);
 }

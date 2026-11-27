@@ -6,6 +6,7 @@ import { CHILE } from '../../domain/playlist/suggested';
 import { Diagnostics } from '../diagnostics/Diagnostics';
 import { probePlaylist, type PlaylistProbe } from '../diagnostics/probePlaylist';
 import { Placeholder } from '../placeholder/Placeholder';
+import { recordLaunch } from '../diagnostics/launches';
 import { createExitGuard } from './exitGuard';
 import styles from './Shell.module.css';
 
@@ -27,6 +28,11 @@ export function Shell() {
   const [playlist, setPlaylist] = createSignal<PlaylistProbe>({ state: 'loading' });
   const systemInfo = platform.systemInfo();
   void probePlaylist(CHILE, platform.fetchText).then(setPlaylist);
+  const [launches, setLaunches] = createSignal<number | null | undefined>(undefined);
+  void platform
+    .openStorage()
+    .then(recordLaunch)
+    .then(setLaunches, () => setLaunches(null));
 
   const exitGuard = createExitGuard({ windowMs: EXIT_WINDOW_MS });
   let hidePrompt: ReturnType<typeof setTimeout> | undefined;
@@ -52,7 +58,7 @@ export function Shell() {
     <>
       <Switch>
         <Match when={screen() === 'diagnostics'}>
-          <Diagnostics info={systemInfo} lastKey={lastKey()} playlist={playlist()} />
+          <Diagnostics info={systemInfo} lastKey={lastKey()} playlist={playlist()} launches={launches()} />
         </Match>
         <Match when={screen() === 'playback'}>
           <Placeholder title="Reproducción" ticket="05" />
