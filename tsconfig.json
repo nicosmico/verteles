@@ -20,5 +20,5 @@
       "@platform": ["./src/platform/web/index.ts"]
     }
   },
-  "include": ["src", "e2e", "vite.config.ts", "playwright.config.ts"]
+  "include": ["src", "e2e", "scripts/**/*.ts", "scripts/**/*.d.mts", "vite.config.ts", "playwright.config.ts"]
 }

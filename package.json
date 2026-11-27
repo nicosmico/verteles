@@ -17,7 +17,8 @@
     "build:tizen": "vite build --mode tizen",
     "tizen:package": "node --env-file-if-exists=.env.local scripts/tizen.mjs package",
     "tizen:install": "node --env-file-if-exists=.env.local scripts/tizen.mjs install",
-    "tizen:run": "node --env-file-if-exists=.env.local scripts/tizen.mjs run"
+    "tizen:run": "node --env-file-if-exists=.env.local scripts/tizen.mjs run",
+    "size": "node scripts/bundle-size.mjs dist && node scripts/bundle-size.mjs dist-tizen"
   },
   "dependencies": {
     "hls.js": "^1.7.4",

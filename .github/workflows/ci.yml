@@ -25,5 +25,8 @@ jobs:
       - run: npm run typecheck
       - run: npm test
       - run: npm run build
+      - run: npm run build:tizen
+      - name: Bundle size budget (60 KiB gzip of initial JS)
+        run: npm run size
       - run: npx playwright install --with-deps chromium
       - run: npm run test:e2e
