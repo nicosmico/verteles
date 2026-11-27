@@ -10,3 +10,7 @@
 
 - [ ] Todas las hipótesis tienen un valor medido en el televisor.
 - [ ] Veredicto explícito: seguir con la fase 1 tal cual, o con qué cambios.
+
+## Notas
+
+- Plantilla y guía de la sesión: [`docs/specs/fase-0-resultados.md`](../../specs/fase-0-resultados.md). Se completa con el dueño del televisor.
