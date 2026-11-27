@@ -8,7 +8,29 @@
   color: var(--color-text-muted);
 }
 
-.legend span::before {
+.legend button {
+  padding: var(--space-1) 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+}
+
+/* Tap targets of at least ~44 CSS px on a phone. */
+[data-orientation='portrait'] .legend button {
+  padding: var(--space-3) 0;
+}
+
+[data-orientation='portrait'] .legend {
+  flex-wrap: wrap;
+  font-size: var(--font-size-body);
+  bottom: var(--space-4);
+  left: var(--space-4);
+  right: var(--space-4);
+}
+
+.legend button::before {
   content: '';
   display: inline-block;
   width: 20px;

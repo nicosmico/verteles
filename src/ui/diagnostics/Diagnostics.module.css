@@ -30,3 +30,12 @@
   font-size: var(--font-size-small);
   word-break: break-all;
 }
+
+/* Phone held upright: narrower padding and stacked label/value rows. */
+[data-orientation='portrait'] .screen {
+  padding: var(--space-4);
+}
+
+[data-orientation='portrait'] .table th {
+  width: 200px;
+}

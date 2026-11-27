@@ -1,5 +1,5 @@
 import { platform } from '@platform';
-import { createSignal, Match, onCleanup, Switch } from 'solid-js';
+import { createSignal, For, Match, onCleanup, Switch } from 'solid-js';
 import type { RemoteKey } from '../../domain/remote/remoteKey';
 import type { KeyPress } from '../../platform/types';
 import { CHILE } from '../../domain/playlist/suggested';
@@ -17,6 +17,12 @@ const SCREEN_KEYS: Partial<Record<RemoteKey, Screen>> = {
   Green: 'playback',
   Yellow: 'list',
 };
+
+const LEGEND: Array<{ screen: Screen; label: string; color: 'red' | 'green' | 'yellow' }> = [
+  { screen: 'diagnostics', label: 'Diagnóstico', color: 'red' },
+  { screen: 'playback', label: 'Reproducción', color: 'green' },
+  { screen: 'list', label: 'Lista 2000', color: 'yellow' },
+];
 
 const EXIT_WINDOW_MS = 2000;
 
@@ -67,11 +73,16 @@ export function Shell() {
           <Placeholder title="Lista 2000" ticket="06" />
         </Match>
       </Switch>
-      <footer class={styles.legend}>
-        <span class={styles.red}>Diagnóstico</span>
-        <span class={styles.green}>Reproducción</span>
-        <span class={styles.yellow}>Lista 2000</span>
-      </footer>
+      <nav class={styles.legend}>
+        <For each={LEGEND}>
+          {(item) => (
+            // Tappable on phones; the remote reaches screens through the color keys instead.
+            <button type="button" tabIndex={-1} class={styles[item.color]} onClick={() => setScreen(item.screen)}>
+              {item.label}
+            </button>
+          )}
+        </For>
+      </nav>
       <div role="status" class={styles.toast} classList={{ [styles.visible as string]: exitPrompt() }}>
         {exitPrompt() ? 'Presiona Back otra vez para salir' : ''}
       </div>
