@@ -49,6 +49,18 @@ npm run tizen:run       # abre la app en el televisor
 
 La app abre en la pantalla **Diagnóstico**, que muestra el modelo, el firmware y las versiones de Tizen y Chromium del televisor.
 
+## Instalar una versión publicada
+
+Cada versión tiene su tag (ADR-0011). Para instalarla tal cual se publicó:
+
+```bash
+git checkout v0.1.0
+npm ci
+npm run tizen:package && npm run tizen:install
+```
+
+Diagnóstico muestra la versión instalada (en builds locales sin versión aparece `dev`).
+
 ## Problemas conocidos
 
 - **`sdb connect` no conecta**: revisa que la *Host PC IP* del paso 2 sea la IP actual de tu computador y reinicia el televisor.

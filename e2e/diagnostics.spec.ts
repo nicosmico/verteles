@@ -12,3 +12,9 @@ test('Diagnóstico shows how long the app took to become interactive', async ({ 
 
   await expect(page.getByRole('row', { name: /Arranque/ })).toContainText(/\d+ ms/);
 });
+
+test('Diagnóstico shows the app version, "dev" outside a release', async ({ page }) => {
+  await page.goto('/');
+
+  await expect(page.getByRole('row', { name: /Versión/ })).toContainText('dev');
+});

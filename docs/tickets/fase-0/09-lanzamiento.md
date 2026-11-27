@@ -9,5 +9,10 @@ Workflow `release` que se dispara manualmente (`workflow_dispatch`, con la versi
 ## Criterios de aceptación
 
 - [ ] Disparar el workflow con `0.1.0` (o pushear el tag `v0.1.0`) produce un Release con el `.wgt` y la web publicada.
-- [ ] Ningún certificado ni contraseña queda en el repo.
+- [x] Ningún certificado ni contraseña queda en el repo.
 - [ ] **HITL:** el dueño del repo configura Pages y, si aplica, los secrets de firma.
+
+## Notas de implementación
+
+- `.github/workflows/release.yml`: disparo manual con la versión. Valida el formato, corre typecheck y tests, estampa la versión en `config.xml` y en Diagnóstico (`VERTELES_VERSION`), construye, verifica el presupuesto de tamaño, crea el tag y el Release con el build de Tizen sin firmar.
+- Decisión sobre la firma: ADR-0011 (firma local; no hay certificados en CI). Por eso no hace falta configurar secrets.

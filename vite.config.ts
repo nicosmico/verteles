@@ -43,6 +43,8 @@ export default defineConfig(({ mode }) => {
     // Tizen ships its own static files: config.xml and the app icon.
     publicDir: isTizen ? 'src/platform/tizen/public' : 'public',
     plugins: [solid(), ...(isTizen ? [tizenHtml()] : [])],
+    // The release workflow sets VERTELES_VERSION; any other build is "dev".
+    define: { __APP_VERSION__: JSON.stringify(process.env.VERTELES_VERSION ?? 'dev') },
     resolve: {
       alias: {
         '@platform': fileURLToPath(new URL(`./src/platform/${platform}/index.ts`, import.meta.url)),

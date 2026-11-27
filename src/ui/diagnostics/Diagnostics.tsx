@@ -22,6 +22,7 @@ export function Diagnostics(props: Props) {
   const rows = (): Array<{ label: string; value: string; long?: boolean }> => {
     const { info } = props;
     return [
+      { label: 'Versión', value: __APP_VERSION__ },
       { label: 'Plataforma', value: PLATFORM_LABELS[info.platform] },
       { label: 'Chromium', value: info.chromium ?? 'No detectado' },
       { label: 'Tizen', value: info.tizen ?? '—' },
