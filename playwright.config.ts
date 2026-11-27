@@ -1,25 +1,22 @@
-import { defineConfig, devices } from '@playwright/test';
+import { defineConfig } from '@playwright/test';
 
+const PORT = 4173;
+
+// E2E runs against the production web build, which is what ships.
 export default defineConfig({
-  testDir: './e2e',
-  fullyParallel: true,
+  testDir: 'e2e',
   forbidOnly: !!process.env.CI,
-  retries: process.env.CI ? 2 : 0,
-  workers: process.env.CI ? 1 : undefined,
-  reporter: 'line',
+  retries: process.env.CI ? 1 : 0,
+  reporter: process.env.CI ? 'github' : 'list',
   use: {
-    baseURL: 'http://localhost:3000',
-    trace: 'on-first-retry',
+    baseURL: `http://localhost:${PORT}`,
+    viewport: { width: 1920, height: 1080 },
   },
-  projects: [
-    {
-      name: 'chromium',
-      use: { ...devices['Desktop Chrome'] },
-    },
-  ],
+  // No device preset: presets fake the user agent, and Diagnóstico must show the real one.
+  projects: [{ name: 'chromium', use: { browserName: 'chromium' } }],
   webServer: {
-    command: 'npm run dev',
-    url: 'http://localhost:3000',
+    command: `npm run build && npm run preview -- --port ${PORT} --strictPort`,
+    port: PORT,
     reuseExistingServer: !process.env.CI,
   },
 });
