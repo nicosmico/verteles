@@ -1,10 +1,12 @@
 import { For } from 'solid-js';
 import type { KeyPress, SystemInfo } from '../../platform/types';
 import styles from './Diagnostics.module.css';
+import type { PlaylistProbe } from './probePlaylist';
 
 interface Props {
   info: SystemInfo;
   lastKey: KeyPress | null;
+  playlist: PlaylistProbe;
 }
 
 const PLATFORM_LABELS: Record<SystemInfo['platform'], string> = {
@@ -25,6 +27,7 @@ export function Diagnostics(props: Props) {
         label: 'Resolución',
         value: `${info.viewport.width}×${info.viewport.height} @${info.viewport.pixelRatio}x`,
       },
+      { label: 'Lista de Chile', value: describePlaylist(props.playlist) },
       { label: 'Última tecla', value: describeKey(props.lastKey) },
       { label: 'User agent', value: info.userAgent, long: true },
     ];
@@ -52,4 +55,15 @@ export function Diagnostics(props: Props) {
 function describeKey(press: KeyPress | null): string {
   if (!press) return 'Presiona una tecla del control';
   return `${press.key ?? 'Desconocida'} (${press.raw})`;
+}
+
+function describePlaylist(probe: PlaylistProbe): string {
+  switch (probe.state) {
+    case 'loading':
+      return 'Descargando…';
+    case 'failed':
+      return `No se pudo descargar (${probe.reason})`;
+    case 'loaded':
+      return `${probe.channels} Canales · ${probe.sources} Fuentes · descarga ${probe.downloadMs} ms · procesamiento ${probe.parseMs} ms`;
+  }
 }

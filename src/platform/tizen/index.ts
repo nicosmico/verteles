@@ -1,3 +1,4 @@
+import { fetchText } from '../shared/fetchText';
 import type { PlatformAdapter } from '../types';
 import { KEYS_TO_REGISTER, tizenRemoteKey } from './keys';
 import type { SamsungGlobals } from './samsung';
@@ -21,4 +22,5 @@ export const platform: PlatformAdapter = {
     return () => window.removeEventListener('keydown', onKeyDown);
   },
   exit: () => read(() => samsung().tizen?.application?.getCurrentApplication?.().exit()),
+  fetchText,
 };

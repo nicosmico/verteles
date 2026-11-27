@@ -28,4 +28,6 @@ export interface PlatformAdapter {
   listenKeys(onKey: (press: KeyPress) => void): () => void;
   /** Closes the app. A no-op where the platform cannot (a browser tab). */
   exit(): void;
+  /** Downloads a text resource such as an M3U Lista. Rejects with HttpError on a non-2xx response. */
+  fetchText(url: string): Promise<string>;
 }
