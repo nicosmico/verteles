@@ -2,7 +2,9 @@ import { platform } from '@platform';
 import { createSignal, Match, onCleanup, Switch } from 'solid-js';
 import type { RemoteKey } from '../../domain/remote/remoteKey';
 import type { KeyPress } from '../../platform/types';
+import { CHILE } from '../../domain/playlist/suggested';
 import { Diagnostics } from '../diagnostics/Diagnostics';
+import { probePlaylist, type PlaylistProbe } from '../diagnostics/probePlaylist';
 import { Placeholder } from '../placeholder/Placeholder';
 import { createExitGuard } from './exitGuard';
 import styles from './Shell.module.css';
@@ -22,7 +24,9 @@ export function Shell() {
   const [screen, setScreen] = createSignal<Screen>('diagnostics');
   const [lastKey, setLastKey] = createSignal<KeyPress | null>(null);
   const [exitPrompt, setExitPrompt] = createSignal(false);
+  const [playlist, setPlaylist] = createSignal<PlaylistProbe>({ state: 'loading' });
   const systemInfo = platform.systemInfo();
+  void probePlaylist(CHILE, platform.fetchText).then(setPlaylist);
 
   const exitGuard = createExitGuard({ windowMs: EXIT_WINDOW_MS });
   let hidePrompt: ReturnType<typeof setTimeout> | undefined;
@@ -48,7 +52,7 @@ export function Shell() {
     <>
       <Switch>
         <Match when={screen() === 'diagnostics'}>
-          <Diagnostics info={systemInfo} lastKey={lastKey()} />
+          <Diagnostics info={systemInfo} lastKey={lastKey()} playlist={playlist()} />
         </Match>
         <Match when={screen() === 'playback'}>
           <Placeholder title="Reproducción" ticket="05" />

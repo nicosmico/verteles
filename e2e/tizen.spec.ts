@@ -3,6 +3,11 @@ import { expect, test } from '@playwright/test';
 
 const tizenIndex = pathToFileURL(`${process.cwd()}/dist-tizen/index.html`).href;
 
+// Keep these tests offline: Diagnóstico downloads the Lista de Chile on start.
+test.beforeEach(async ({ page }) => {
+  await page.route(/^https?:\/\//, (route) => route.fulfill({ status: 503 }));
+});
+
 test('the Tizen build boots from local files and identifies itself as Tizen', async ({ page }) => {
   await page.goto(tizenIndex);
 
