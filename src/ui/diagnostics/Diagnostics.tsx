@@ -67,7 +67,7 @@ function describePlaylist(probe: PlaylistProbe): string {
     case 'failed':
       return `No se pudo descargar (${probe.reason})`;
     case 'loaded':
-      return `${probe.channels} Canales · ${probe.sources} Fuentes · descarga ${probe.downloadMs} ms · procesamiento ${probe.parseMs} ms`;
+      return `${probe.channels.length} Canales · ${probe.sources} Fuentes · descarga ${probe.downloadMs} ms · procesamiento ${probe.parseMs} ms`;
   }
 }
 

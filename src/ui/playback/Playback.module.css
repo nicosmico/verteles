@@ -1,0 +1,77 @@
+.screen {
+  position: absolute;
+  inset: 0;
+}
+
+.video {
+  position: absolute;
+  inset: 0;
+}
+
+.info {
+  position: absolute;
+  top: var(--space-6);
+  left: var(--space-8);
+  max-width: 900px;
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-2);
+  background: rgba(11, 13, 18, 0.8);
+}
+
+.title {
+  margin: 0 0 var(--space-1);
+  font-size: var(--font-size-small);
+  color: var(--color-text-muted);
+  font-weight: 500;
+}
+
+.channel {
+  margin: 0;
+  font-size: var(--font-size-title);
+  font-weight: 700;
+}
+
+.status {
+  margin: var(--space-1) 0;
+}
+
+.detail {
+  margin: 0;
+  font-size: var(--font-size-small);
+  color: var(--color-text-muted);
+}
+
+.zapButtons {
+  position: absolute;
+  right: var(--space-8);
+  bottom: var(--space-6);
+  display: flex;
+  gap: var(--space-2);
+}
+
+.zapButtons button {
+  padding: var(--space-2) var(--space-3);
+  border: 0;
+  border-radius: var(--radius-1);
+  background: var(--color-surface-raised);
+  color: var(--color-text);
+  font: inherit;
+  font-size: var(--font-size-small);
+}
+
+[data-orientation='portrait'] .info {
+  left: var(--space-4);
+  right: var(--space-4);
+}
+
+[data-orientation='portrait'] .zapButtons {
+  left: var(--space-4);
+  right: var(--space-4);
+  bottom: 140px;
+}
+
+[data-orientation='portrait'] .zapButtons button {
+  flex: 1;
+  padding: var(--space-3);
+  font-size: var(--font-size-body);
+}

@@ -3,6 +3,7 @@ import { fetchText } from '../shared/fetchText';
 import { openBrowserStorage } from '../shared/indexedDbStorage';
 import type { PlatformAdapter } from '../types';
 import { webRemoteKey } from './keys';
+import { createWebPlayer } from './player';
 
 export const platform: PlatformAdapter = {
   name: 'web',
@@ -20,5 +21,6 @@ export const platform: PlatformAdapter = {
   // A page cannot close its own tab.
   exit: () => {},
   fetchText,
+  createPlayer: createWebPlayer,
   openStorage: openBrowserStorage,
 };

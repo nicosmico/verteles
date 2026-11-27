@@ -2,6 +2,7 @@ import { fetchText } from '../shared/fetchText';
 import { openBrowserStorage } from '../shared/indexedDbStorage';
 import type { PlatformAdapter } from '../types';
 import { KEYS_TO_REGISTER, tizenRemoteKey } from './keys';
+import { createTizenPlayer } from './player';
 import type { SamsungGlobals } from './samsung';
 import { read, tizenSystemInfo } from './systemInfo';
 
@@ -24,5 +25,6 @@ export const platform: PlatformAdapter = {
   },
   exit: () => read(() => samsung().tizen?.application?.getCurrentApplication?.().exit()),
   fetchText,
+  createPlayer: createTizenPlayer,
   openStorage: openBrowserStorage,
 };

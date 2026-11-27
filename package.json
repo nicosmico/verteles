@@ -20,6 +20,7 @@
     "tizen:run": "node --env-file-if-exists=.env.local scripts/tizen.mjs run"
   },
   "dependencies": {
+    "hls.js": "^1.7.4",
     "solid-js": "~1.9.20"
   },
   "devDependencies": {
