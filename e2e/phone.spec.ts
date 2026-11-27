@@ -6,16 +6,17 @@ test.use({ viewport: { width: 390, height: 844 }, hasTouch: true, isMobile: true
 test('on a phone held upright the text is readable', async ({ page }) => {
   await page.goto('/');
 
-  const cell = page.getByRole('row', { name: /Plataforma/ }).getByRole('cell');
-  const box = await cell.boundingBox();
-  // Rendered height of one line of body text, in CSS px: at least ~14 px to be legible.
-  expect(box?.height ?? 0).toBeGreaterThanOrEqual(14);
-  const fontSize = await cell.evaluate((el) => parseFloat(getComputedStyle(el).fontSize));
-  const scale = await page.evaluate(() => {
-    const stage = document.querySelector('[data-stage]') as HTMLElement;
-    return stage.getBoundingClientRect().width / stage.offsetWidth;
-  });
-  expect(fontSize * scale).toBeGreaterThanOrEqual(14);
+  // Rendered size of body text in CSS px: font size times the stage's scale. Mobile browsers settle
+  // their viewport (and fire resize) just after load, so wait for the stable value.
+  const renderedFontPx = () =>
+    page.evaluate(() => {
+      const stage = document.querySelector('[data-stage]') as HTMLElement;
+      const cell = document.querySelector('td') as HTMLElement;
+      const scale = stage.getBoundingClientRect().width / stage.offsetWidth;
+      return parseFloat(getComputedStyle(cell).fontSize) * scale;
+    });
+  await expect.poll(renderedFontPx).toBeGreaterThanOrEqual(14);
+  await expect(page.locator('[data-stage]')).toHaveAttribute('data-orientation', 'portrait');
 });
 
 test('on a phone the screens switch by tapping the legend', async ({ page }) => {
