@@ -6,6 +6,7 @@ import { CHILE } from '../../domain/playlist/suggested';
 import { Diagnostics } from '../diagnostics/Diagnostics';
 import { probePlaylist, type PlaylistProbe } from '../diagnostics/probePlaylist';
 import { Placeholder } from '../placeholder/Placeholder';
+import { ListScreen } from '../list/ListScreen';
 import { Playback } from '../playback/Playback';
 import type { Storage } from '../../platform/types';
 import { createKeyBus } from './keyBus';
@@ -95,7 +96,7 @@ export function Shell() {
           </Show>
         </Match>
         <Match when={screen() === 'list'}>
-          <Placeholder title="Lista 2000" detail="Llega en el ticket 06 de la fase 0." />
+          <ListScreen channels={channels()} keys={keys} />
         </Match>
       </Switch>
       <nav class={styles.legend}>

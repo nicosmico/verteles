@@ -1,0 +1,27 @@
+.viewport {
+  position: relative;
+  overflow: hidden;
+  touch-action: none;
+}
+
+.rows {
+  position: absolute;
+  inset: 0;
+  will-change: transform;
+}
+
+.row {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  align-items: center;
+  padding: 0 var(--space-3);
+  border-radius: var(--radius-1);
+}
+
+.row[aria-selected='true'] {
+  background: var(--color-surface-raised);
+  box-shadow: inset 0 0 0 4px var(--color-accent);
+}
