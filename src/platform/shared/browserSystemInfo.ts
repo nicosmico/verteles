@@ -7,6 +7,8 @@ export function browserSystemInfo(platform: PlatformName): SystemInfo {
     platform,
     userAgent,
     ...describeUserAgent(userAgent),
+    model: null,
+    firmware: null,
     viewport: { width: window.innerWidth, height: window.innerHeight, pixelRatio: window.devicePixelRatio },
   };
 }

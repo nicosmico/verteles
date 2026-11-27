@@ -18,6 +18,8 @@ export function Diagnostics(props: Props) {
       { label: 'Plataforma', value: PLATFORM_LABELS[info.platform] },
       { label: 'Chromium', value: info.chromium ?? 'No detectado' },
       { label: 'Tizen', value: info.tizen ?? '—' },
+      { label: 'Modelo', value: info.model ?? '—' },
+      { label: 'Firmware', value: info.firmware ?? '—' },
       {
         label: 'Resolución',
         value: `${info.viewport.width}×${info.viewport.height} @${info.viewport.pixelRatio}x`,
