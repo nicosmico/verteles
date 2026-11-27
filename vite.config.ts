@@ -59,7 +59,7 @@ export default defineConfig(({ mode }) => {
       }),
     },
     test: {
-      include: ['src/**/*.test.{ts,tsx}'],
+      include: ['src/**/*.test.{ts,tsx}', 'scripts/**/*.test.ts'],
       environment: 'node',
     },
   };

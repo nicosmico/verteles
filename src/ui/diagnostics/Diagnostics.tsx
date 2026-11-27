@@ -9,6 +9,8 @@ interface Props {
   playlist: PlaylistProbe;
   /** Launch count, or null when the platform cannot persist. Undefined while loading. */
   launches: number | null | undefined;
+  /** Navigation start to first interactive frame; null until measured. */
+  startupMs: number | null;
 }
 
 const PLATFORM_LABELS: Record<SystemInfo['platform'], string> = {
@@ -30,6 +32,7 @@ export function Diagnostics(props: Props) {
         value: `${info.viewport.width}×${info.viewport.height} @${info.viewport.pixelRatio}x`,
       },
       { label: 'Lista de Chile', value: describePlaylist(props.playlist) },
+      { label: 'Arranque', value: props.startupMs === null ? '…' : `${props.startupMs} ms` },
       { label: 'Aperturas', value: describeLaunches(props.launches) },
       { label: 'Última tecla', value: describeKey(props.lastKey) },
       { label: 'User agent', value: info.userAgent, long: true },

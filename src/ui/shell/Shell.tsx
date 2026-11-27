@@ -1,5 +1,5 @@
 import { platform } from '@platform';
-import { createEffect, createSignal, For, Match, onCleanup, Show, Switch } from 'solid-js';
+import { createEffect, createSignal, For, Match, onCleanup, onMount, Show, Switch } from 'solid-js';
 import type { RemoteKey } from '../../domain/remote/remoteKey';
 import type { KeyPress } from '../../platform/types';
 import { CHILE } from '../../domain/playlist/suggested';
@@ -11,6 +11,7 @@ import { Playback } from '../playback/Playback';
 import type { Storage } from '../../platform/types';
 import { createKeyBus } from './keyBus';
 import { recordLaunch } from '../diagnostics/launches';
+import { measureStartup } from '../diagnostics/startup';
 import { createExitGuard } from './exitGuard';
 import styles from './Shell.module.css';
 
@@ -51,6 +52,8 @@ export function Shell() {
       setLaunches(null);
     },
   );
+  const [startupMs, setStartupMs] = createSignal<number | null>(null);
+  onMount(() => void measureStartup().then(setStartupMs));
   const keys = createKeyBus();
   const channels = () => {
     const probe = playlist();
@@ -85,7 +88,7 @@ export function Shell() {
     <>
       <Switch>
         <Match when={screen() === 'diagnostics'}>
-          <Diagnostics info={systemInfo} lastKey={lastKey()} playlist={playlist()} launches={launches()} />
+          <Diagnostics info={systemInfo} lastKey={lastKey()} playlist={playlist()} launches={launches()} startupMs={startupMs()} />
         </Match>
         <Match when={screen() === 'playback'}>
           <Show
