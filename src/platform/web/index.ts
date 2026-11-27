@@ -1,5 +1,6 @@
 import { browserSystemInfo } from '../shared/browserSystemInfo';
 import { fetchText } from '../shared/fetchText';
+import { openBrowserStorage } from '../shared/indexedDbStorage';
 import type { PlatformAdapter } from '../types';
 import { webRemoteKey } from './keys';
 
@@ -19,4 +20,5 @@ export const platform: PlatformAdapter = {
   // A page cannot close its own tab.
   exit: () => {},
   fetchText,
+  openStorage: openBrowserStorage,
 };

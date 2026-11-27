@@ -21,6 +21,13 @@ export interface KeyPress {
   raw: string;
 }
 
+/** Small key-value persistence for app state that must survive a restart. */
+export interface Storage {
+  get<T>(key: string): Promise<T | undefined>;
+  set(key: string, value: unknown): Promise<void>;
+  remove(key: string): Promise<void>;
+}
+
 export interface PlatformAdapter {
   name: PlatformName;
   systemInfo(): SystemInfo;
@@ -28,6 +35,8 @@ export interface PlatformAdapter {
   listenKeys(onKey: (press: KeyPress) => void): () => void;
   /** Closes the app. A no-op where the platform cannot (a browser tab). */
   exit(): void;
+  /** Opens the app's Storage. Rejects when the platform cannot persist (e.g. IndexedDB disabled). */
+  openStorage(): Promise<Storage>;
   /** Downloads a text resource such as an M3U Lista. Rejects with HttpError on a non-2xx response. */
   fetchText(url: string): Promise<string>;
 }
