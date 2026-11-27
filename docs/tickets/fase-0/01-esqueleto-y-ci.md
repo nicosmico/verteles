@@ -17,5 +17,6 @@ El proyecto vacío con las capas reales y la pantalla de Diagnóstico en su vers
 
 ## Notas de implementación
 
+- GitHub Pages debe estar en *Settings → Pages → Deploy from a branch → `gh-pages` / root*. En modo "GitHub Actions" cada deploy reemplaza el sitio completo y no puede haber previews por PR. `public/.nojekyll` evita que Pages procese el build con Jekyll.
 - El preset `Desktop Chrome` de Playwright falsea el user agent; el proyecto e2e usa Chromium sin preset.
 - Para el ticket 02: Vite emite `<script type="module" crossorigin>`; hay que verificar que Tizen lo cargue desde el paquete local.
