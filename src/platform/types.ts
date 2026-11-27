@@ -8,6 +8,9 @@ export interface SystemInfo {
   userAgent: string;
   chromium: string | null;
   tizen: string | null;
+  /** Device model and firmware, when the platform reports them (TVs). */
+  model: string | null;
+  firmware: string | null;
   viewport: { width: number; height: number; pixelRatio: number };
 }
 
