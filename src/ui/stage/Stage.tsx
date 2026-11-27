@@ -28,7 +28,7 @@ export function Stage(props: ParentProps) {
   onCleanup(() => window.removeEventListener('resize', onResize));
 
   return (
-    <div class={styles.viewport}>
+    <div data-viewport class={styles.viewport}>
       <div
         data-stage
         data-orientation={layout().orientation}

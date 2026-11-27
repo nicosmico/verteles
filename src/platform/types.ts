@@ -1,5 +1,6 @@
 // Contracts every platform adapter implements (ADR-0005).
 // The UI imports an adapter only through the `@platform` alias, resolved at build time.
+import type { TunerPlayer } from '../domain/playback/tuner';
 import type { RemoteKey } from '../domain/remote/remoteKey';
 
 export type PlatformName = 'web' | 'tizen';
@@ -28,6 +29,12 @@ export interface Storage {
   remove(key: string): Promise<void>;
 }
 
+/** Plays one Source at a time inside a container element. */
+export interface Player extends TunerPlayer {
+  /** Stops playback and removes the player from the page. */
+  destroy(): void;
+}
+
 export interface PlatformAdapter {
   name: PlatformName;
   systemInfo(): SystemInfo;
@@ -35,6 +42,8 @@ export interface PlatformAdapter {
   listenKeys(onKey: (press: KeyPress) => void): () => void;
   /** Closes the app. A no-op where the platform cannot (a browser tab). */
   exit(): void;
+  /** Creates the platform's video player inside `container`. */
+  createPlayer(container: HTMLElement): Player;
   /** Opens the app's Storage. Rejects when the platform cannot persist (e.g. IndexedDB disabled). */
   openStorage(): Promise<Storage>;
   /** Downloads a text resource such as an M3U Lista. Rejects with HttpError on a non-2xx response. */

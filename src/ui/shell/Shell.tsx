@@ -1,11 +1,14 @@
 import { platform } from '@platform';
-import { createSignal, For, Match, onCleanup, Switch } from 'solid-js';
+import { createEffect, createSignal, For, Match, onCleanup, Show, Switch } from 'solid-js';
 import type { RemoteKey } from '../../domain/remote/remoteKey';
 import type { KeyPress } from '../../platform/types';
 import { CHILE } from '../../domain/playlist/suggested';
 import { Diagnostics } from '../diagnostics/Diagnostics';
 import { probePlaylist, type PlaylistProbe } from '../diagnostics/probePlaylist';
 import { Placeholder } from '../placeholder/Placeholder';
+import { Playback } from '../playback/Playback';
+import type { Storage } from '../../platform/types';
+import { createKeyBus } from './keyBus';
 import { recordLaunch } from '../diagnostics/launches';
 import { createExitGuard } from './exitGuard';
 import styles from './Shell.module.css';
@@ -35,16 +38,33 @@ export function Shell() {
   const systemInfo = platform.systemInfo();
   void probePlaylist(CHILE, platform.fetchText).then(setPlaylist);
   const [launches, setLaunches] = createSignal<number | null | undefined>(undefined);
-  void platform
-    .openStorage()
-    .then(recordLaunch)
-    .then(setLaunches, () => setLaunches(null));
+  // undefined while opening; null when the platform cannot persist.
+  const [storage, setStorage] = createSignal<Storage | null | undefined>(undefined);
+  void platform.openStorage().then(
+    async (opened) => {
+      setStorage(opened);
+      setLaunches(await recordLaunch(opened).catch(() => null));
+    },
+    () => {
+      setStorage(null);
+      setLaunches(null);
+    },
+  );
+  const keys = createKeyBus();
+  const channels = () => {
+    const probe = playlist();
+    return probe.state === 'loaded' ? probe.channels : null;
+  };
+
+  // On a TV, AVPlay draws behind the page: Reproducción must leave the page transparent.
+  createEffect(() => (document.documentElement.dataset.screen = screen()));
 
   const exitGuard = createExitGuard({ windowMs: EXIT_WINDOW_MS });
   let hidePrompt: ReturnType<typeof setTimeout> | undefined;
 
   const onKey = (press: KeyPress) => {
     setLastKey(press);
+    keys.emit(press);
     const target = press.key && SCREEN_KEYS[press.key];
     if (target) setScreen(target);
     if (press.key === 'Back') onBack();
@@ -67,10 +87,15 @@ export function Shell() {
           <Diagnostics info={systemInfo} lastKey={lastKey()} playlist={playlist()} launches={launches()} />
         </Match>
         <Match when={screen() === 'playback'}>
-          <Placeholder title="Reproducción" ticket="05" />
+          <Show
+            when={channels() !== null && storage() !== undefined}
+            fallback={<Placeholder title="Reproducción" detail={describeLoading(playlist())} />}
+          >
+            <Playback channels={channels() ?? []} storage={storage() ?? null} keys={keys} />
+          </Show>
         </Match>
         <Match when={screen() === 'list'}>
-          <Placeholder title="Lista 2000" ticket="06" />
+          <Placeholder title="Lista 2000" detail="Llega en el ticket 06 de la fase 0." />
         </Match>
       </Switch>
       <nav class={styles.legend}>
@@ -88,4 +113,8 @@ export function Shell() {
       </div>
     </>
   );
+}
+
+function describeLoading(probe: PlaylistProbe): string {
+  return probe.state === 'failed' ? `No se pudo descargar la Lista de Chile (${probe.reason}).` : 'Cargando la Lista de Chile…';
 }

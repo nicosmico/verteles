@@ -1,10 +1,11 @@
+import type { Channel } from '../../domain/playlist/channel';
 import { importPlaylist } from '../../domain/playlist/importPlaylist';
 import type { SuggestedPlaylist } from '../../domain/playlist/suggested';
 import { HttpError } from '../../platform/shared/fetchText';
 
 export type PlaylistProbe =
   | { state: 'loading' }
-  | { state: 'loaded'; channels: number; sources: number; downloadMs: number; parseMs: number }
+  | { state: 'loaded'; channels: Channel[]; sources: number; downloadMs: number; parseMs: number }
   | { state: 'failed'; reason: string };
 
 /** Downloads and imports a Lista, timing each step (hypothesis H4 of phase 0). */
@@ -24,7 +25,7 @@ export async function probePlaylist(
   const parsed = performance.now();
   return {
     state: 'loaded',
-    channels: channels.length,
+    channels,
     sources: channels.reduce((total, channel) => total + channel.sources.length, 0),
     downloadMs: Math.round(downloaded - started),
     parseMs: Math.round(parsed - downloaded),
