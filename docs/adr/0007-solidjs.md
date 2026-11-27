@@ -6,3 +6,4 @@ El cuello de botella en un televisor es el trabajo de CPU por cada tecla presion
 
 - Las librerías exclusivas de React (incluida Norigin Spatial Navigation) no se pueden usar.
 - El estado global se maneja con stores y signals de Solid; no se usa Zustand.
+- Partimos con **Solid 1.9**. Solid 2.0 salió en noviembre de 2026, pero su plugin de Vite sigue en pre-release; migramos cuando sea estable.

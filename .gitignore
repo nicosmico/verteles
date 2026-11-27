@@ -36,3 +36,6 @@ certs/
 playwright-report/
 test-results/
 
+
+# Build outputs
+dist-tizen
