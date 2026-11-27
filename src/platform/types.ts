@@ -1,5 +1,6 @@
 // Contracts every platform adapter implements (ADR-0005).
 // The UI imports an adapter only through the `@platform` alias, resolved at build time.
+import type { RemoteKey } from '../domain/remote/remoteKey';
 
 export type PlatformName = 'web' | 'tizen';
 
@@ -14,7 +15,17 @@ export interface SystemInfo {
   viewport: { width: number; height: number; pixelRatio: number };
 }
 
+/** A key press as the app sees it: the RemoteKey (null when unknown) and what the platform reported. */
+export interface KeyPress {
+  key: RemoteKey | null;
+  raw: string;
+}
+
 export interface PlatformAdapter {
   name: PlatformName;
   systemInfo(): SystemInfo;
+  /** Starts delivering key presses; returns a function that stops it. */
+  listenKeys(onKey: (press: KeyPress) => void): () => void;
+  /** Closes the app. A no-op where the platform cannot (a browser tab). */
+  exit(): void;
 }

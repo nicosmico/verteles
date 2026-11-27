@@ -37,3 +37,41 @@ test("on a TV, Diagnóstico shows the model, firmware and Tizen version reported
   // The platform API wins over the user agent, which here claims 6.5.
   await expect(page.getByRole('row', { name: /^Tizen/ })).toContainText('9.0');
 });
+
+test('on a TV, the app registers the remote keys, reads Samsung key codes and exits on Back twice', async ({ page }) => {
+  await page.addInitScript(() => {
+    const calls = { registered: [] as string[], exited: 0 };
+    Object.assign(window, {
+      __samsung: calls,
+      tizen: {
+        tvinputdevice: { registerKey: (name: string) => calls.registered.push(name) },
+        application: { getCurrentApplication: () => ({ exit: () => calls.exited++ }) },
+      },
+    });
+  });
+  const pressKeyCode = (keyCode: number) =>
+    page.evaluate((code) => {
+      // Samsung remotes only report keyCode, which KeyboardEvent's constructor cannot set.
+      const event = new KeyboardEvent('keydown', { bubbles: true });
+      Object.defineProperty(event, 'keyCode', { value: code });
+      window.dispatchEvent(event);
+    }, keyCode);
+  const samsung = () => page.evaluate(() => (window as unknown as { __samsung: { registered: string[]; exited: number } }).__samsung);
+
+  await page.goto(tizenIndex);
+  await expect(page.getByRole('heading', { name: 'Diagnóstico' })).toBeVisible();
+
+  expect((await samsung()).registered).toEqual(
+    expect.arrayContaining(['ChannelUp', 'ChannelDown', 'MediaPlayPause', 'ColorF0Red', '0', '9']),
+  );
+
+  await pressKeyCode(427);
+  await expect(page.getByRole('row', { name: /Última tecla/ })).toContainText('ChannelUp (427)');
+
+  await pressKeyCode(10009);
+  await expect(page.getByRole('status')).toHaveText('Presiona Back otra vez para salir');
+  expect((await samsung()).exited).toBe(0);
+
+  await pressKeyCode(10009);
+  await expect.poll(async () => (await samsung()).exited).toBe(1);
+});

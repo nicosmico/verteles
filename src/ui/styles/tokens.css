@@ -8,6 +8,12 @@
   --color-accent: #3d8bfd;
   --color-danger: #ef5350;
 
+  /* The remote's color keys. */
+  --color-key-red: #e53935;
+  --color-key-green: #43a047;
+  --color-key-yellow: #fdd835;
+  --color-key-blue: #1e88e5;
+
   --space-1: 8px;
   --space-2: 16px;
   --space-3: 24px;
