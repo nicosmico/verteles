@@ -17,6 +17,10 @@ App IPTV para televisores de bajos recursos. **Rendimiento en el televisor** es 
 
 Los Releases los crea el workflow `release` de GitHub Actions, no un push de tags.
 
+## Delegación a subagentes
+
+Elige el modelo según la complejidad de la tarea delegada: **Sonnet** (esfuerzo alto) para trabajo mecánico o acotado, como búsquedas, cambios repetitivos, docs o revisar logs de CI; **Haiku** si es trivial; el modelo principal solo para diseño, depuración difícil o decisiones de arquitectura.
+
 ## Reglas de arquitectura
 
 - Capas `domain/` → `platform/` → `ui/` (ADR-0005). `domain/` es TypeScript puro: sin Solid, sin DOM, sin `fetch`.
