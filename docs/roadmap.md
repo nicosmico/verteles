@@ -1,5 +1,7 @@
 # Roadmap
 
+La web funciona en computador y en teléfono (ADR-0010).
+
 Cada fase termina en un **lanzamiento**: versión web en GitHub Pages y `.wgt` adjunto a un GitHub Release (más adelante también `.ipk` y APK). La versión final se publicará en Firebase Hosting por su dominio.
 
 Cada fase se trabaja así: **spec → tickets → TDD** (ver `AGENTS.md`).
