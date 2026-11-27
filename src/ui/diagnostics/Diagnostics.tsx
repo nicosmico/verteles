@@ -1,9 +1,10 @@
 import { For } from 'solid-js';
-import type { SystemInfo } from '../../platform/types';
+import type { KeyPress, SystemInfo } from '../../platform/types';
 import styles from './Diagnostics.module.css';
 
 interface Props {
   info: SystemInfo;
+  lastKey: KeyPress | null;
 }
 
 const PLATFORM_LABELS: Record<SystemInfo['platform'], string> = {
@@ -24,6 +25,7 @@ export function Diagnostics(props: Props) {
         label: 'Resolución',
         value: `${info.viewport.width}×${info.viewport.height} @${info.viewport.pixelRatio}x`,
       },
+      { label: 'Última tecla', value: describeKey(props.lastKey) },
       { label: 'User agent', value: info.userAgent, long: true },
     ];
   };
@@ -45,4 +47,9 @@ export function Diagnostics(props: Props) {
       </table>
     </section>
   );
+}
+
+function describeKey(press: KeyPress | null): string {
+  if (!press) return 'Presiona una tecla del control';
+  return `${press.key ?? 'Desconocida'} (${press.raw})`;
 }

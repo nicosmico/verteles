@@ -1,12 +1,12 @@
 import { browserSystemInfo } from '../shared/browserSystemInfo';
 import type { SystemInfo } from '../types';
-import type { SamsungWebApis, TizenApis } from './samsung';
+import type { SamsungGlobals } from './samsung';
 
 const PLATFORM_VERSION = 'http://tizen.org/feature/platform.version';
 
 export function tizenSystemInfo(): SystemInfo {
   const base = browserSystemInfo('tizen');
-  const { webapis, tizen } = window as { webapis?: SamsungWebApis; tizen?: TizenApis };
+  const { webapis, tizen } = window as SamsungGlobals;
 
   const platformVersion = read(() => tizen?.systeminfo?.getCapability?.(PLATFORM_VERSION));
   return {
@@ -19,7 +19,7 @@ export function tizenSystemInfo(): SystemInfo {
 }
 
 /** Samsung APIs throw when a privilege is missing; a missing value is not an error here. */
-function read<T>(get: () => T): T | undefined {
+export function read<T>(get: () => T): T | undefined {
   try {
     return get();
   } catch {
